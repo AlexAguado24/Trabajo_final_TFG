@@ -45,7 +45,7 @@ package com.example.restaurante
             binding.recyThird.adapter = adaptador*/
 
 
-            db = FirebaseDatabase.getInstance("https://fir-ces2023mas-default-rtdb.firebaseio.com/")
+            db = FirebaseDatabase.getInstance("https://fir-ces-jaam-default-rtdb.firebaseio.com/")
             _binding = FragmentThirdBinding.inflate(inflater, container, false)
             return binding.root
 
