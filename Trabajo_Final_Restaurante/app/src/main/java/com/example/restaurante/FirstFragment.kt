@@ -29,7 +29,7 @@ class FirstFragment : Fragment() {
     ): View? {
         auth = FirebaseAuth.getInstance();
         _binding = FragmentFirstBinding.inflate(inflater, container, false);
-        return binding.root;
+        return binding.btnLogin;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
