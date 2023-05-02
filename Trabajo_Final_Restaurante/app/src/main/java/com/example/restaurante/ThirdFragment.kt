@@ -10,16 +10,17 @@ package com.example.restaurante
     import androidx.recyclerview.widget.LinearLayoutManager
     import com.example.restaurante.databinding.FragmentThirdBinding
     import com.google.android.material.snackbar.Snackbar
+    import com.google.firebase.database.DataSnapshot
+    import com.google.firebase.database.DatabaseError
 
     import com.google.firebase.database.FirebaseDatabase
+    import com.google.firebase.database.ValueEventListener
 
 
-
-
-    class ThirdFragment : Fragment() {
+class ThirdFragment : Fragment() {
 
         private var _binding: FragmentThirdBinding? = null
-        private lateinit var listaProducto: ArrayList<Producto>
+      //  private lateinit var listaProducto: ArrayList<Producto>
         private lateinit var adaptador :AdaptadorProductos
 
         lateinit var aryBebidas:ArrayList<Producto>
@@ -33,29 +34,45 @@ package com.example.restaurante
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View? {
-          /*  aryBebidas= ArrayList()
-            aryComida= ArrayList()
-            aryPostre= ArrayList()
+            aryBebidas= ArrayList()
+           // aryComida= ArrayList()
+           // aryPostre= ArrayList()
 
             adaptador = AdaptadorProductos(requireContext(),aryBebidas)
 
-            //Bebidas
-            aryBebidas.add(Producto("Pizza",12,R.drawable.pizza))
-
-            binding.recyThird.adapter = adaptador*/
+          //  binding.recyThird.adapter = adaptador
 
 
-            db = FirebaseDatabase.getInstance("https://fir-ces-jaam-default-rtdb.firebaseio.com/")
+            db = FirebaseDatabase.getInstance("https://restaurante-ces-default-rtdb.firebaseio.com/")
             _binding = FragmentThirdBinding.inflate(inflater, container, false)
+
             return binding.root
 
         }
+
+
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
 
+            //TODO ##################################################           QUEDÉ ACÁ ##################################################
 
+            db.getReference("bebidas").addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (i in snapshot.children) {
+                        val bebidas:Producto = i.getValue(Producto::class.java)!!
+                        bebidas.bebidasArrL.find {
+                            it.equals("ME FALTA SEGUIR")
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
 
        //     binding.recyThird.adapter = adaptador
    //         binding.recyThird.layoutManager = LinearLayoutManager(requireContext(),

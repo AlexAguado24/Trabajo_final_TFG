@@ -1,6 +1,7 @@
 package com.example.restaurante
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,15 +35,29 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //todo ####### INICIAR SESION CON UN USUARIO
         binding.btnLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment);
-            if (binding.editNombre.text.isNotEmpty()) {
-
+            if (!binding.editNomLog.text.isEmpty() && !binding.editPassLog.text.isEmpty()){
+                auth.signInWithEmailAndPassword(binding.editNomLog.text.toString(),binding.editPassLog.text.toString())
+                    .addOnCompleteListener {
+                        if (it.isSuccessful){
+                            Log.v("usuario_log","usuario logueado")
+                            // findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
+                        }else{
+                            Log.v("usuario_log","el usuario no existe")
+                        }
+                    }
             }
+
+
+
         }
 
-        binding.btnLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
+        binding.btnRegister.setOnClickListener {
+
+
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment);
+
         }
     }
 
