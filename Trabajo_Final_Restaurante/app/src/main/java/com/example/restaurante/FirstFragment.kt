@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.restaurante.databinding.FragmentFirstBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -29,7 +30,7 @@ class FirstFragment : Fragment() {
     ): View? {
         auth = FirebaseAuth.getInstance();
         _binding = FragmentFirstBinding.inflate(inflater, container, false);
-        return binding.btnLogin;
+        return binding.root;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,11 +43,17 @@ class FirstFragment : Fragment() {
                     .addOnCompleteListener {
                         if (it.isSuccessful){
                             Log.v("usuario_log","usuario logueado")
-                            // findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
+                        //    Snackbar.make(binding.root,"usuario logueado",Snackbar.LENGTH_SHORT)
+                            val bundle =Bundle()
+                            bundle.putString("nombre",binding.editNomLog.text.toString())
+                            bundle.putString("uid",auth.currentUser!!.uid)
+                            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
                         }else{
-                            Log.v("usuario_log","el usuario no existe")
+                            Snackbar.make(binding.root,"el usuario no existe",Snackbar.LENGTH_SHORT).show()
                         }
                     }
+            }else{
+                Snackbar.make(binding.root,"no ha ingresado datos",Snackbar.LENGTH_SHORT).show()
             }
 
 
@@ -54,8 +61,6 @@ class FirstFragment : Fragment() {
         }
 
         binding.btnRegister.setOnClickListener {
-
-
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment);
 
         }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.restaurante.databinding.FragmentSecondBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
@@ -23,7 +24,13 @@ class SecondFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    //TRAIGO LAS VARIABLES A ESTE FRAGMENT PARA TENER LOS VALORES DE SU POSTERIOR CUENTA BANCARIA ,ETC
+    //private lateinit var nombre:String?=null
+    //private lateinit var uid:Int?=null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,18 +56,23 @@ class SecondFragment : Fragment() {
 
 
             //todo    ## CREAR USUARIO
-            if (!binding.editNomReg.text.isEmpty() && !binding.editPassReg.text.isEmpty()){
-            auth.createUserWithEmailAndPassword(binding.editNomReg.text.toString(),binding.editPassReg.text.toString())
+      //      if (!binding.editNomReg.text.isEmpty() && !binding.editPassReg.text.isEmpty()){
+            auth.createUserWithEmailAndPassword(
+                binding.editNomReg.text.toString(),
+                binding.editPassReg.text.toString())
 
                 .addOnCompleteListener {
                     if (it.isSuccessful){
-                        Log.v("usuario_creado","usuario creado")
+                        //Log.v("usuario_creado","usuario creado")
+                        Snackbar.make(binding.root,"usuario creado", Snackbar.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
                     }else{
-                        Log.v("usuario_creado","no se pudo crear el usuario") //esto se mostraría igual en el caso que el usuario ya exista
+                      //  Log.v("usuario_creado","no se pudo crear el usuario") //esto se mostraría igual en el caso que el usuario ya exista
+                        Snackbar.make(binding.root,"no se pudo crear el usuario", Snackbar.LENGTH_SHORT).show()
                     }
                 }
-            }
-            //findNavController().navigate(R.id.action_SecondFragment_to_ThirdFragment)
+      //      }
+            //findNavController().navigate( R.id.action_SecondFragment_to_ThirdFragment)
         }
     }
 
