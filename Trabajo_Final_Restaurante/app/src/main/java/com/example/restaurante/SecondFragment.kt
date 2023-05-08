@@ -54,25 +54,25 @@ class SecondFragment : Fragment() {
         }
         binding.btnRegistr.setOnClickListener {
 
-
             //todo    ## CREAR USUARIO
-      //      if (!binding.editNomReg.text.isEmpty() && !binding.editPassReg.text.isEmpty()){
-            auth.createUserWithEmailAndPassword(
-                binding.editNomReg.text.toString(),
-                binding.editPassReg.text.toString())
-
-                .addOnCompleteListener {
-                    if (it.isSuccessful){
-                        //Log.v("usuario_creado","usuario creado")
-                        Snackbar.make(binding.root,"usuario creado", Snackbar.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-                    }else{
-                      //  Log.v("usuario_creado","no se pudo crear el usuario") //esto se mostraría igual en el caso que el usuario ya exista
-                        Snackbar.make(binding.root,"no se pudo crear el usuario", Snackbar.LENGTH_SHORT).show()
-                    }
+        if (!binding.editNomReg.text.isEmpty() && !binding.editPassReg.text.isEmpty()){
+                    auth.createUserWithEmailAndPassword(binding.editNomReg.text.toString(),binding.editPassReg.text.toString())
+                        .addOnCompleteListener {
+                            if (it.isSuccessful){
+                                Snackbar.make(binding.root,"Registro usuario",Snackbar.LENGTH_SHORT)
+                                val bundle =Bundle()
+                                bundle.putString("nombre",binding.editNomReg.text.toString())
+                                bundle.putString("uid",auth.currentUser!!.uid)
+                                findNavController().navigate(R.id.action_SecondFragment_to_secondActivity,bundle)
+                            }else{
+                                Snackbar.make(binding.root,"el usuario no existe",Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                }else{
+                    Snackbar.make(binding.root,"no ha ingresado datos",Snackbar.LENGTH_SHORT).show()
                 }
-      //      }
-            //findNavController().navigate( R.id.action_SecondFragment_to_ThirdFragment)
+
+
         }
     }
 
@@ -81,3 +81,4 @@ class SecondFragment : Fragment() {
         _binding = null
     }
 }
+

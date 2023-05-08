@@ -36,20 +36,26 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //todo ####### INICIAR SESION CON UN USUARIO
+        //todo ####### INICIAR SESION CON UN USUARIO YA REGISTRADO
+
+        //todo paso los datos con la cuenta logueada al ThirdFragment
+
         binding.btnLogin.setOnClickListener {
             if (!binding.editNomLog.text.isEmpty() && !binding.editPassLog.text.isEmpty()){
                 auth.signInWithEmailAndPassword(binding.editNomLog.text.toString(),binding.editPassLog.text.toString())
                     .addOnCompleteListener {
-                        if (it.isSuccessful){
-                            Log.v("usuario_log","usuario logueado")
-                        //    Snackbar.make(binding.root,"usuario logueado",Snackbar.LENGTH_SHORT)
-                            val bundle =Bundle()
-                            bundle.putString("nombre",binding.editNomLog.text.toString())
-                            bundle.putString("uid",auth.currentUser!!.uid)
-                            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
-                        }else{
+                        if (!it.isSuccessful){
+
                             Snackbar.make(binding.root,"el usuario no existe",Snackbar.LENGTH_SHORT).show()
+
+                        }else{
+                            val bundle =Bundle()
+                            var email=it.result.user!!.email
+                            email=binding.editNomLog.text.toString()
+                            bundle.putString("nombre",email)
+                            bundle.putString("uid",auth.currentUser!!.uid)
+                            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment,bundle)
+
                         }
                     }
             }else{
@@ -61,7 +67,9 @@ class FirstFragment : Fragment() {
         }
 
         binding.btnRegister.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment);
+
+            //todo No paso ningun dato porque se los pido en el SecondFragment directamente
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
 
         }
     }

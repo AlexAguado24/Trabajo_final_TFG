@@ -25,8 +25,8 @@
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_ThirdFragment"
-            app:destination="@id/ThirdFragment" />
+            android:id="@+id/action_SecondFragment_to_secondActivity"
+            app:destination="@id/secondActivity" />
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
@@ -42,7 +42,18 @@
             android:id="@+id/action_ThirdFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
-
+    <activity
+        android:id="@+id/secondActivity"
+        android:name="com.example.restaurante.SecondActivity"
+        android:label="activity_second"
+        tools:layout="@layout/activity_second" >
+        <argument
+            android:name="uid"
+            app:argType="string" />
+        <argument
+            android:name="nombre"
+            app:argType="string" />
+    </activity>
 
 
 </navigation>
