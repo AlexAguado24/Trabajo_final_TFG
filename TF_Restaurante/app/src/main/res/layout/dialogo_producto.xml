@@ -1,73 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="180dp"
     android:id="@+id/id_linear_dialogo"
-    android:padding="20dp"
+    android:paddingHorizontal="7dp"
+    android:background="@color/black"
+
+
     >
 
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="47dp"
+        android:layout_height="40dp"
+
+
+        android:padding="8dp"
+        android:text="Back"
+        android:textSize="8dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
         android:id="@+id/img_dialogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginVertical="20dp"
 
-        />
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btn_cancel"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/text_producto"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-       android:layout_gravity="center"
-        >
-
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_producto"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="60dp"
+        android:layout_marginHorizontal="10dp"
+        android:paddingLeft="15dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
 
 
-            />
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_precio"
-            android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/text_precio"
+        app:layout_constraintStart_toStartOf="@+id/text_precio"
+        app:layout_constraintTop_toTopOf="@+id/img_dialogo" />
 
-            />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/text_precio"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        >
-     <Button
-         android:layout_width="40dp"
-         android:layout_height="40dp"
-         android:text="+"
-         android:id="@+id/btn_arriba"
-
-         />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_can_pro"
+        android:layout_marginHorizontal="10dp"
+        android:paddingLeft="15dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/img_dialogo"
+        app:layout_constraintEnd_toStartOf="@+id/btn_abajo"
+        app:layout_constraintStart_toEndOf="@+id/img_dialogo" />
 
 
-            />
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="-"
-            android:id="@+id/btn_abajo"
-            />
-        
-        
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    
-    
-</LinearLayout>
+    <Button
+        android:id="@+id/btn_arriba"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
+        android:text="+"
+        app:layout_constraintEnd_toEndOf="@+id/edit_can_pro"
+        app:layout_constraintStart_toStartOf="@+id/edit_can_pro"
+        app:layout_constraintTop_toTopOf="@+id/text_producto" />
+
+    <TextView
+        android:id="@+id/edit_can_pro"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@+id/btn_abajo"
+        app:layout_constraintEnd_toEndOf="@+id/btn_abajo"
+        app:layout_constraintStart_toStartOf="@+id/btn_abajo"
+        app:layout_constraintTop_toBottomOf="@+id/btn_arriba" />
+
+
+    <Button
+        android:id="@+id/btn_abajo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="60dp"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:padding="8dp"
+        android:text="OK"
+        android:textSize="8dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

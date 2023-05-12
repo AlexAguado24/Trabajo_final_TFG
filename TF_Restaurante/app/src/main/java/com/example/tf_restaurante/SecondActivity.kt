@@ -62,6 +62,9 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+
+
+
     private fun configurarRecycler() {
 
         binding.recyThird.adapter = adaptador
@@ -75,8 +78,8 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
 
         aryProductos = ArrayList()
 
-        adaptador = AdaptadorProductos(applicationContext, aryProductos)
-
+        //adaptador = AdaptadorProductos(applicationContext, aryProductos)
+        adaptador = AdaptadorProductos(this,aryProductos, supportFragmentManager)
 
 
     }

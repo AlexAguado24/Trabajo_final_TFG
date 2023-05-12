@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tf_restaurante.R
+import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.model.Producto
 import com.google.android.material.snackbar.Snackbar
 
 
-class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>): RecyclerView.Adapter<AdaptadorProductos.MyHolder>() {
+class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>,var soporteF:FragmentManager): RecyclerView.Adapter<AdaptadorProductos.MyHolder>() {
 
 
     /*lateinit var listener:OnRecyclerListener;
@@ -55,18 +57,23 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
         Glide.with(contexto).
         load(producto.imagen)
             .into(holder.imagenProducto)
+
         holder.textoProducto.setText(producto.titulo)
         holder.textoPrecio.setText(producto.precio.toString())
 
+        holder.itemView.setOnClickListener {
+            val dialogo = DialogoProducto.newInstance(listado[position])
+            dialogo.show(soporteF,"")
+        }
 
 
-
-        holder.linear_item.setOnClickListener{
+      /*  holder.linear_item.setOnClickListener{
             Snackbar.make(holder.linear_item,"Pulsaste en item recycler", Snackbar.LENGTH_SHORT).show()
       //      listener.onRecyclerSelected(producto)
+          val dialogo = DialogoProducto.newInstance(listado[position])
 
-
-        }
+            dialogo.show(soporteF,"")
+        }*/
 
     }
 
