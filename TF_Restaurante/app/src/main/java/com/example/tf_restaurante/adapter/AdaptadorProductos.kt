@@ -13,17 +13,11 @@ import com.bumptech.glide.Glide
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.model.Producto
-import com.google.android.material.snackbar.Snackbar
 
 
 class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>,var soporteF:FragmentManager): RecyclerView.Adapter<AdaptadorProductos.MyHolder>() {
 
 
-    /*lateinit var listener:OnRecyclerListener;
-    interface OnRecyclerListener{
-        fun onRecyclerSelected(producto: Producto)
-
-    }*/
 
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -38,7 +32,7 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
             textoProducto = itemView.findViewById(R.id.nombre_item)
             textoPrecio = itemView.findViewById(R.id.precio_item)
             linear_item=itemView.findViewById(R.id.linear_item)
-      //      listener = contexto as OnRecyclerListener
+
 
         }
     }
@@ -66,14 +60,6 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
             dialogo.show(soporteF,"")
         }
 
-
-      /*  holder.linear_item.setOnClickListener{
-            Snackbar.make(holder.linear_item,"Pulsaste en item recycler", Snackbar.LENGTH_SHORT).show()
-      //      listener.onRecyclerSelected(producto)
-          val dialogo = DialogoProducto.newInstance(listado[position])
-
-            dialogo.show(soporteF,"")
-        }*/
 
     }
 

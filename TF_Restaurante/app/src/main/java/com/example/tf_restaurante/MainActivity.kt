@@ -15,12 +15,11 @@ import com.example.tf_restaurante.databinding.ActivityMainBinding
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.model.Producto
 
-class MainActivity : AppCompatActivity()/*,
-    AdaptadorProductos.OnRecyclerListener */{
+class MainActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    lateinit var productoSec: Producto
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,10 +56,6 @@ class MainActivity : AppCompatActivity()/*,
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
-   /* override fun onRecyclerSelected(producto: Producto) {
-           Snackbar.make(binding.root,"${producto.titulo}", Snackbar.LENGTH_SHORT).show()
-        //productoSec=producto
-        DialogoProducto().show(supportFragmentManager,"")
-    }*/
+
 
 }

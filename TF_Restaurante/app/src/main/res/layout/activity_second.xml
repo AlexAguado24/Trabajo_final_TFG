@@ -48,7 +48,7 @@
         android:id="@+id/recy_third"
         android:layout_width="match_parent"
         android:layout_height="530dp"
-        android:background="@color/grey"
+        android:background="@color/bk_tot_cla"
         />
 
     <Button
