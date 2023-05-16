@@ -88,16 +88,23 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     override fun onClick(v: View?) {
 
         when (v!!.id) {
+
             R.id.btn_pagar -> {
-                for (i in arrayProdGuar) {
-                    acum = acum + i.valorTotal.toString().toDouble()
 
-                }
+                    for (i in arrayProdGuar) {
+                        acum = acum + i.valorTotal.toString().toDouble()
+                    }
+                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum)
 
-                val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum)
+                        adaptadorTot.notifyDataSetChanged()
+
+                    dialogoTot.show(supportFragmentManager, "")
+                    acum-=acum
+
+                //TODO
 
 
-                dialogoTot.show(supportFragmentManager, "")
+
 
 
             }

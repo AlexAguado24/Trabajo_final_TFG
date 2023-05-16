@@ -175,7 +175,7 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                     dismiss()
                 } else {
 
-                    Snackbar.make(vista, "No no , ingrese +1 amigo! ", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(vista, "Ingrese un valor mayor que 1! ", Snackbar.LENGTH_SHORT).show()
 
                 }
 

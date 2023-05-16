@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TF_Restaurante" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.TF_Restaurante" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -21,5 +21,5 @@
 
     <style name="Theme.TF_Restaurante.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.TF_Restaurante.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.TF_Restaurante.PopupOverlay.NoActionBar" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
