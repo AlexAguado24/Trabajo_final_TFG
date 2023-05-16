@@ -171,11 +171,15 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                    // Log.v("Total",totalFinal.toString())
                     // Log.v("salida", producto!!.precio.toString())
                    // Snackbar.make(vista, "Total = ${redondeo} ", Snackbar.LENGTH_SHORT).show()
+
+                    dismiss()
                 } else {
 
                     Snackbar.make(vista, "No no , ingrese +1 amigo! ", Snackbar.LENGTH_SHORT).show()
+
                 }
-                dismiss()
+
+
 
 
             }
