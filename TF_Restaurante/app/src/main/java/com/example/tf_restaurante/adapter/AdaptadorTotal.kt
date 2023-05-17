@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
@@ -56,9 +57,10 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
     override fun onBindViewHolder(holder: MiHolder, position: Int) {
         var producto_T:ProductoTotal=lista.get(position)
 
-        Glide.with(context).
-        load(producto_T.imagen)
-            .into(holder.imgTot)
+       // Glide.with(context).load(producto_T.imagen).into(holder.imgTot)
+
+        Glide.with(context).load(producto_T.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imgTot)
+
 
         holder.cantidad.setText(producto_T.cantProducto.toString())
 

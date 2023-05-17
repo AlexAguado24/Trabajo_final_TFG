@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -97,10 +96,14 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
             R.id.btn_pagar_t->{
 
-
                 Snackbar.make(vista,"Muchas gracias!",Snackbar.LENGTH_SHORT).show()
 
-            }
+                activity?.finish()
+
+
+
+
+                }
             R.id.btn_atras_t->{
                 dismiss()
             }

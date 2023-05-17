@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.SecondActivity
 import com.example.tf_restaurante.model.Producto
@@ -102,8 +103,9 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
 
         precio.setText("Precio: " + valorGral)
-        Glide.with(requireContext()).load(productoGr.imagen)
-            .into(img)
+     //   Glide.with(requireContext()).load(productoGr.imagen).into(img)
+        Glide.with(requireContext()).load(productoGr.imagen).apply(RequestOptions.circleCropTransform()).into(img)
+
 
         producto.setText(productoGr.titulo!!.toString())
         super.onStart()

@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.model.Producto
@@ -48,9 +49,9 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         var producto:Producto=listado.get(position)
-        Glide.with(contexto).
-        load(producto.imagen)
-            .into(holder.imagenProducto)
+      //  Glide.with(contexto).load(producto.imagen).into(holder.imagenProducto)
+        Glide.with(contexto).load(producto.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imagenProducto)
+
 
         holder.textoProducto.setText(producto.titulo)
         holder.textoPrecio.setText(producto.precio.toString())

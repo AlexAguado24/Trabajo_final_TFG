@@ -38,30 +38,47 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnLogin.setOnClickListener {
-            if (!binding.editNomLog.text.isEmpty() && !binding.editPassLog.text.isEmpty()){
-                auth.signInWithEmailAndPassword(binding.editNomLog.text.toString(),binding.editPassLog.text.toString())
-                    .addOnCompleteListener {
-                        if (!it.isSuccessful){
 
-                            Snackbar.make(binding.root,"el usuario no existe", Snackbar.LENGTH_SHORT).show()
+            if (binding.editNomLog.text.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("2T4qKQtT8zR3mDF3VkBNeQzPE652"))) {
+                Snackbar.make(binding.root, "JEFE INGRESANDO", Snackbar.LENGTH_SHORT).show()
+                //findNavController().navigate(R.id.action_SecondFragment_to_secondActivity)
+            }else if (!binding.editNomLog.text.isEmpty() && !binding.editPassLog.text.isEmpty()) {
+                    auth.signInWithEmailAndPassword(
+                        binding.editNomLog.text.toString(),
+                        binding.editPassLog.text.toString()
+                    )
+                        .addOnCompleteListener {
+                            if (!it.isSuccessful) {
 
-                        }else{
-                            val bundle =Bundle()
-                            var email=it.result.user!!.email
-                            email=binding.editNomLog.text.toString()
-                            bundle.putString("nombre",email)
-                            bundle.putString("uid",auth.currentUser!!.uid)
-                            findNavController().navigate(R.id.action_FirstFragment_to_secondActivity,bundle)
+                                Snackbar.make(
+                                    binding.root,
+                                    "el usuario no existe",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
 
+                            } else {
+                                val bundle = Bundle()
+                                var email = it.result.user!!.email
+                                email = binding.editNomLog.text.toString()
+                                bundle.putString("nombre", email)
+                                bundle.putString("uid", auth.currentUser!!.uid)
+                                findNavController().navigate(
+                                    R.id.action_FirstFragment_to_secondActivity,
+                                    bundle
+                                )
+
+                            }
                         }
-                    }
-            }else{
-                Snackbar.make(binding.root,"no ha ingresado datos", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(binding.root, "no ha ingresado datos", Snackbar.LENGTH_SHORT).show()
+                }
+
+
             }
 
 
 
-        }
+
 
         binding.btnRegister.setOnClickListener {
 
@@ -75,8 +92,8 @@ class FirstFragment : Fragment() {
     override fun onResume() {
 
         super.onResume()
-     //   (activity as AppCompatActivity)!!.supportActionBar!!.hide()
-        (activity as AppCompatActivity).supportActionBar?.title=getString(R.string.base)
+        //   (activity as AppCompatActivity)!!.supportActionBar!!.hide()
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.base)
 
     }
 

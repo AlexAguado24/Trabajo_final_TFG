@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.databinding.FragmentSecondBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +36,9 @@ class SecondFragment : Fragment() {
         db = Firebase.database("https://restaurante-ces-default-rtdb.firebaseio.com/")
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+
+
+
         return binding.root
 
     }
