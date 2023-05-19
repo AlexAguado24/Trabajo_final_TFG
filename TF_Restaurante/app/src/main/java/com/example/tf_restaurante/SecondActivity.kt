@@ -67,6 +67,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     }
 
 
+
     private fun configurarRecycler() {
 
         binding.recyThird.adapter = adaptador

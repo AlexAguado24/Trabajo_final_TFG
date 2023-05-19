@@ -2,6 +2,7 @@ package com.example.tf_restaurante.dialogs
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -27,6 +29,9 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
     interface OnProductoTotal {
         fun onProductoTotal(productoTotal: ProductoTotal)
+
+
+
 
     }
 
@@ -73,13 +78,14 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         instancias()
 
 
-
-
-
-
-
         return builder.create()
     }
+
+
+
+
+
+
 
     fun instancias() {
 
@@ -91,6 +97,8 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         ok = vista.findViewById(R.id.btn_ok)
         back = vista.findViewById(R.id.btn_cancel)
         editCant = vista.findViewById(R.id.edit_can_pro)
+
+
 
 
     }

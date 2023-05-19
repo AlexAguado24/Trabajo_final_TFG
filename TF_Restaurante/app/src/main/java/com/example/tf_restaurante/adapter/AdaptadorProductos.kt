@@ -49,8 +49,8 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         var producto:Producto=listado.get(position)
-      //  Glide.with(contexto).load(producto.imagen).into(holder.imagenProducto)
-        Glide.with(contexto).load(producto.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imagenProducto)
+       Glide.with(contexto).load(producto.imagen).into(holder.imagenProducto)
+       // Glide.with(contexto).load(producto.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imagenProducto)
 
 
         holder.textoProducto.setText(producto.titulo)
@@ -58,7 +58,12 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
 
         holder.itemView.setOnClickListener {
             val dialogo = DialogoProducto.newInstance(listado[position])
+
             dialogo.show(soporteF,"")
+
+
+
+
         }
 
 

@@ -70,7 +70,7 @@
         android:id="@+id/btn_pagar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pagar"
+        android:text="Ver consumos"
         style="?attr/materialButtonOutlinedStyle"
         app:strokeColor="@color/black"
         android:textColor="@color/white"
