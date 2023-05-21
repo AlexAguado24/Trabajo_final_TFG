@@ -30,9 +30,6 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     interface OnProductoTotal {
         fun onProductoTotal(productoTotal: ProductoTotal)
 
-
-
-
     }
 
     companion object {
@@ -72,13 +69,10 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         var builder = AlertDialog.Builder(requireContext())
-
         builder.setView(vista)
-
         instancias()
-
-
         return builder.create()
+
     }
 
 
@@ -164,7 +158,8 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                     var prodTot: ProductoTotal
                  //   val redondeo = String.format("%.2f", acumTot).toDouble()
                    var roundoff = (acumTot * 100).roundToInt().toDouble() / 100
-               //     totalFinal=totalFinal+roundoff
+
+                 //     totalFinal=totalFinal+roundoff
                  //   Snackbar.make(vista, "Total = ${totalFinal} ", Snackbar.LENGTH_SHORT).show()
                     prodTot = (ProductoTotal(
                         productoGr.imagen,

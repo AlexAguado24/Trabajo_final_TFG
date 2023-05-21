@@ -39,34 +39,31 @@ class FirstFragment : Fragment() {
 
         binding.btnLogin.setOnClickListener {
 
-            if (binding.editNomLog.text.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("2T4qKQtT8zR3mDF3VkBNeQzPE652"))) {
-                Snackbar.make(binding.root, "JEFE INGRESANDO", Snackbar.LENGTH_SHORT).show()
-                //findNavController().navigate(R.id.action_SecondFragment_to_secondActivity)
-            }else if (!binding.editNomLog.text.isEmpty() && !binding.editPassLog.text.isEmpty()) {
-                    auth.signInWithEmailAndPassword(
-                        binding.editNomLog.text.toString(),
-                        binding.editPassLog.text.toString()
-                    )
+            if (!binding.editNomLog.text.isEmpty() && !binding.editPassLog.text.isEmpty()) {
+                    auth.signInWithEmailAndPassword(binding.editNomLog.text.toString(),binding.editPassLog.text.toString())
                         .addOnCompleteListener {
                             if (!it.isSuccessful) {
 
-                                Snackbar.make(
-                                    binding.root,
-                                    "el usuario no existe",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
+                                Snackbar.make(binding.root,"el usuario no existe",Snackbar.LENGTH_SHORT).show()
 
                             } else {
-                                val bundle = Bundle()
-                                var email = it.result.user!!.email
-                                email = binding.editNomLog.text.toString()
-                                bundle.putString("nombre", email)
-                                bundle.putString("uid", auth.currentUser!!.uid)
-                                findNavController().navigate(
-                                    R.id.action_FirstFragment_to_secondActivity,
-                                    bundle
-                                )
 
+                                if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("p0SdCJtGDjQTiRRmijRdf1pAJw42"))) {
+                                    Snackbar.make(binding.root, "JEFE INGRESANDO", Snackbar.LENGTH_SHORT).show()
+                                    findNavController().navigate(R.id.action_FirstFragment_to_thirdfragment)
+
+                                }else{
+
+                                    val bundle = Bundle()
+                                    var email = it.result.user!!.email
+                                    email = binding.editNomLog.text.toString()
+                                    bundle.putString("nombre", email)
+                                    bundle.putString("uid", auth.currentUser!!.uid)
+                                    findNavController().navigate(
+                                        R.id.action_FirstFragment_to_secondActivity,
+                                        bundle
+                                    )
+                                }
                             }
                         }
                 } else {
