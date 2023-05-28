@@ -36,7 +36,7 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
             preUn=itemView.findViewById(R.id.prec_uni_item)
             valTot=itemView.findViewById(R.id.valor_tot_item)
 
-            db = FirebaseDatabase.getInstance("https://restaurante-ces-default-rtdb.firebaseio.com/")
+            db = FirebaseDatabase.getInstance("https://restaurante-tfg-default-rtdb.firebaseio.com/")
             instancias()
         }
 

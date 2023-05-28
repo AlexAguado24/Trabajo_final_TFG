@@ -1,10 +1,12 @@
 package com.example.tf_restaurante
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -28,12 +30,22 @@ class SecondFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
 
+    override fun onAttach(context: Context) {
+
+        super.onAttach(context)
+    }
+
+    override fun onResume() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.regist)
+        super.onResume()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         auth = FirebaseAuth.getInstance();
-        db = Firebase.database("https://restaurante-ces-default-rtdb.firebaseio.com/")
+        db = Firebase.database("https://restaurante-tfg-default-rtdb.firebaseio.com/")
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
 

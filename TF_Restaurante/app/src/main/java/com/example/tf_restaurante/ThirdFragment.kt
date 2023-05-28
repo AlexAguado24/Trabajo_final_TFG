@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.example.tf_restaurante.databinding.FragmentThirdBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -17,6 +18,14 @@ class ThirdFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth;
+
+    override fun onResume() {
+
+        super.onResume()
+        //   (activity as AppCompatActivity)!!.supportActionBar!!.hide()
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.stock)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

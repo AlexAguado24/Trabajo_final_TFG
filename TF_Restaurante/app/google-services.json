@@ -1,95 +1,27 @@
 {
   "project_info": {
-    "project_number": "955069599270",
-    "firebase_url": "https://restaurante-ces-default-rtdb.firebaseio.com",
-    "project_id": "restaurante-ces",
-    "storage_bucket": "restaurante-ces.appspot.com"
+    "project_number": "1002360494133",
+    "firebase_url": "https://restaurante-tfg-default-rtdb.firebaseio.com",
+    "project_id": "restaurante-tfg",
+    "storage_bucket": "restaurante-tfg.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:955069599270:android:272876a85fb950744c20e7",
-        "android_client_info": {
-          "package_name": "com.example.myapplicationborrar"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "955069599270-nfk9a2b8iktfsamckp5abfeai2tsbi2e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAGNY5Jumw_3E04EatYok9IfzUUtq7r210"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "955069599270-nfk9a2b8iktfsamckp5abfeai2tsbi2e.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:955069599270:android:0acb3f1561f6690e4c20e7",
-        "android_client_info": {
-          "package_name": "com.example.restau_t_final"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "955069599270-nfk9a2b8iktfsamckp5abfeai2tsbi2e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAGNY5Jumw_3E04EatYok9IfzUUtq7r210"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "955069599270-nfk9a2b8iktfsamckp5abfeai2tsbi2e.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:955069599270:android:19db2c0e789b7ac44c20e7",
+        "mobilesdk_app_id": "1:1002360494133:android:b26675b7e4240f7f70397c",
         "android_client_info": {
           "package_name": "com.example.tf_restaurante"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "955069599270-nfk9a2b8iktfsamckp5abfeai2tsbi2e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAGNY5Jumw_3E04EatYok9IfzUUtq7r210"
+          "current_key": "AIzaSyA5NFDw5VFvprPGcmGJvkj8U-vfsubemhI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "955069599270-nfk9a2b8iktfsamckp5abfeai2tsbi2e.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

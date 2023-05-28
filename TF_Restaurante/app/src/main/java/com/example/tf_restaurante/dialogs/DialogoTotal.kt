@@ -17,6 +17,14 @@ import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 
+
+
+/*
+import java.util.*
+import javax.mail.*
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage*/
+
 class DialogoTotal : DialogFragment(), View.OnClickListener {
 
 
@@ -98,7 +106,11 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
                 Snackbar.make(vista,"Muchas gracias!",Snackbar.LENGTH_SHORT).show()
 
-                activity?.finish()
+           //     enviarCorreo()
+
+
+
+              //  activity?.finish()
 
 
 
@@ -124,6 +136,33 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
         recycler_Tot.layoutManager =LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
 
     }
+
+  /*  fun enviarCorreo() {
+        val properties = Properties()
+        properties["mail.smtp.host"] = "tu_host_smtp"
+        properties["mail.smtp.port"] = "tu_puerto_smtp"
+        properties["mail.smtp.auth"] = "true" // Si se requiere autenticación
+        properties["mail.smtp.starttls.enable"] = "true" // Si se requiere TLS
+
+        val session = Session.getInstance(properties, object : Authenticator() {
+            override fun getPasswordAuthentication(): PasswordAuthentication {
+                return PasswordAuthentication("usuarioadmin@gmail.com", "admin1234")
+            }
+        })
+
+        try {
+            val message = MimeMessage(session)
+            message.setFrom(InternetAddress("usuarioadmin@gmail.com"))
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("marcos3432@gmail.com"))
+            message.subject = "Asunto del correo"
+            message.setText("Cuerpo del correo")
+
+            Transport.send(message)
+            println("Correo enviado exitosamente.")
+        } catch (e: MessagingException) {
+            e.printStackTrace()
+        }
+    }*/
 
 
     override fun onResume() {

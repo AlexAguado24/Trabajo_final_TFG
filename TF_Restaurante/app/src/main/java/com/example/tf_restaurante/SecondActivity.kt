@@ -2,6 +2,7 @@ package com.example.tf_restaurante
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tf_restaurante.adapter.AdaptadorProductos
@@ -32,7 +33,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        db = FirebaseDatabase.getInstance("https://restaurante-ces-default-rtdb.firebaseio.com/")
+        db = FirebaseDatabase.getInstance("https://restaurante-tfg-default-rtdb.firebaseio.com/")
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
         instancias()
@@ -123,6 +124,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (i in snapshot.children) { // acá saca el estado del nodo
                                 val producto = i.getValue(Producto::class.java)
+                                //Log.v("ver",i.toString())
                                 adaptador.verComida(producto!!)
                             }
                         }
