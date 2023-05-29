@@ -52,7 +52,7 @@ dependencies {
 
     // implementation 'com.github.bumptech.glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-    //implementation 'com.sun.mail:javax.mail:1.6.2'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
 
 
     testImplementation 'junit:junit:4.13.2'

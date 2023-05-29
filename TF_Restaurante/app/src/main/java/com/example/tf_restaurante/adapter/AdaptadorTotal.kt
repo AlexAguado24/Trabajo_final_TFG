@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>): RecyclerView.Adapter<AdaptadorTotal.MiHolder>() {
@@ -20,6 +22,9 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
     private lateinit var adaptador: AdaptadorTotal
     lateinit var aryProductos: ArrayList<ProductoTotal>
     lateinit var vista: View
+    private lateinit var auth: FirebaseAuth
+
+
 
     inner class MiHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgTot: ImageView;
@@ -29,12 +34,14 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
         var valTot: TextView;
 
 
+
         init {
             imgTot=itemView.findViewById(R.id.img_total)
             cantidad=itemView.findViewById(R.id.cant_item)
             titulo=itemView.findViewById(R.id.titulo_item)
             preUn=itemView.findViewById(R.id.prec_uni_item)
             valTot=itemView.findViewById(R.id.valor_tot_item)
+
 
             db = FirebaseDatabase.getInstance("https://restaurante-tfg-default-rtdb.firebaseio.com/")
             instancias()
@@ -50,7 +57,7 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiHolder {
         vista = LayoutInflater.from(context).inflate(R.layout.item_recycler_total,parent,false)
-
+        auth = FirebaseAuth.getInstance();
         return MiHolder(vista)
     }
 
@@ -59,18 +66,27 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
 
        // Glide.with(context).load(producto_T.imagen).into(holder.imgTot)
 
-        Glide.with(context).load(producto_T.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imgTot)
-
-
-        holder.cantidad.setText(producto_T.cantProducto.toString())
 
 
 
-        holder.titulo.setText(producto_T.titulo.toString())
-        holder.preUn.setText(producto_T.precio.toString())
+        if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
 
 
-        holder.valTot.setText(producto_T.valorTotal.toString())
+
+            Glide.with(context).load(producto_T.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imgTot)
+            holder.titulo.setText(producto_T.titulo.toString())
+            holder.cantidad.setText(producto_T.cantProducto.toString())
+
+
+
+        }else{
+            Glide.with(context).load(producto_T.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imgTot)
+            holder.cantidad.setText(producto_T.cantProducto.toString())
+            holder.titulo.setText(producto_T.titulo.toString())
+            holder.preUn.setText(producto_T.precio.toString())
+            holder.valTot.setText(producto_T.valorTotal.toString())
+        }
+
 
 
     }

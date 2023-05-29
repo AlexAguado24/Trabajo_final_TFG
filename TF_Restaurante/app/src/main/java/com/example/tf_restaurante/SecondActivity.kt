@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.adapter.AdaptadorProductos
 import com.example.tf_restaurante.adapter.AdaptadorTotal
 import com.example.tf_restaurante.databinding.ActivitySecondBinding
@@ -12,6 +14,7 @@ import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.dialogs.DialogoTotal
 import com.example.tf_restaurante.model.Producto
 import com.example.tf_restaurante.model.ProductoTotal
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -29,11 +32,13 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     lateinit var ProdGuar: ProductoTotal
     lateinit var arrayProdGuar: ArrayList<ProductoTotal>
     var acum = 0.0
+    private lateinit var auth: FirebaseAuth;
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         db = FirebaseDatabase.getInstance("https://restaurante-tfg-default-rtdb.firebaseio.com/")
+        auth = FirebaseAuth.getInstance();
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
         instancias()
@@ -59,7 +64,9 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                 .setValue(nombre)          //busco el identificador usuario dentro de t0do el desplegable que hay debajo busco lo que me interese en este caso nombre  //lo que me guarda en el set value,es el nombre recuperado
     */
 
-
+        if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
+           binding.btnPagar.setText("CARGAR PRODUCTOS")
+        }
 
 
 
@@ -83,8 +90,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
         aryProductos = ArrayList()
         aryProductosTot = ArrayList()
         arrayProdGuar = ArrayList()
-
-
+        nombre = intent.extras!!.getString("nombre")
         adaptador = AdaptadorProductos(this, aryProductos, supportFragmentManager)
         adaptadorTot = AdaptadorTotal(this, arrayProdGuar)
 
@@ -101,7 +107,8 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                     for (i in arrayProdGuar) {
                         acum = acum + i.valorTotal.toString().toDouble()
                     }
-                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum)
+
+                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum,nombre.toString())
 
                         adaptadorTot.notifyDataSetChanged()
 

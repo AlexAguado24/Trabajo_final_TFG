@@ -20,12 +20,15 @@ import com.example.tf_restaurante.SecondActivity
 import com.example.tf_restaurante.model.Producto
 import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.roundToInt
 
 
 class DialogoProducto : DialogFragment(), View.OnClickListener {
 
     lateinit var listenerT: OnProductoTotal
+    private lateinit var auth: FirebaseAuth;
+
 
     interface OnProductoTotal {
         fun onProductoTotal(productoTotal: ProductoTotal)
@@ -71,7 +74,13 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         var builder = AlertDialog.Builder(requireContext())
         builder.setView(vista)
         instancias()
+        auth = FirebaseAuth.getInstance();
         return builder.create()
+
+
+
+
+
 
     }
 
@@ -104,12 +113,23 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         valorGral = productoGr.precio!!.toDouble()
 
 
-        precio.setText("Precio: " + valorGral)
-     //   Glide.with(requireContext()).load(productoGr.imagen).into(img)
-        Glide.with(requireContext()).load(productoGr.imagen).apply(RequestOptions.circleCropTransform()).into(img)
 
 
-        producto.setText(productoGr.titulo!!.toString())
+        if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
+            Glide.with(requireContext()).load(productoGr.imagen).apply(RequestOptions.circleCropTransform()).into(img)
+            producto.setText(productoGr.titulo!!.toString())
+            ok.setText("cargar")
+        }else{
+
+            precio.setText("Precio: " + valorGral)
+            //   Glide.with(requireContext()).load(productoGr.imagen).into(img)
+            Glide.with(requireContext()).load(productoGr.imagen).apply(RequestOptions.circleCropTransform()).into(img)
+
+            producto.setText(productoGr.titulo!!.toString())
+
+
+        }
+
         super.onStart()
     }
 

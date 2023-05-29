@@ -8,12 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.model.Producto
+
 
 
 class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>,var soporteF:FragmentManager): RecyclerView.Adapter<AdaptadorProductos.MyHolder>() {
@@ -43,6 +45,7 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val view =
             LayoutInflater.from(contexto).inflate(R.layout.item_producto, parent, false)
+
         return MyHolder(view)
 
     }
@@ -56,15 +59,20 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
         holder.textoProducto.setText(producto.titulo)
         holder.textoPrecio.setText(producto.precio.toString())
 
-        holder.itemView.setOnClickListener {
-            val dialogo = DialogoProducto.newInstance(listado[position])
 
-            dialogo.show(soporteF,"")
 
+
+
+            holder.itemView.setOnClickListener {
+                val dialogo = DialogoProducto.newInstance(listado[position])
+
+                dialogo.show(soporteF,"")
 
 
 
         }
+
+
 
 
     }

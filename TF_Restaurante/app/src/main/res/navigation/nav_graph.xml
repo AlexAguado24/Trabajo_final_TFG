@@ -17,9 +17,7 @@
         <action
             android:id="@+id/action_FirstFragment_to_secondActivity"
             app:destination="@id/secondActivity" />
-        <action
-            android:id="@+id/action_FirstFragment_to_thirdfragment"
-            app:destination="@id/ThirdFragment" />
+
 
 
     </fragment>
@@ -39,12 +37,14 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/ThirdFragment"
-        android:name="com.example.tf_restaurante.ThirdFragment"
-        android:label="@string/third_fragment_label"
-        tools:layout="@layout/fragment_third">
-    </fragment>
+
+
+
+
+
+
+
+
 
 
 

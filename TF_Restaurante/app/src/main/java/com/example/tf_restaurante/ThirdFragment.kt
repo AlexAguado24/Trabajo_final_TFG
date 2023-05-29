@@ -14,15 +14,12 @@ import com.google.firebase.auth.FirebaseAuth
 class ThirdFragment : Fragment() {
     private var _binding: FragmentThirdBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth;
 
     override fun onResume() {
 
         super.onResume()
-        //   (activity as AppCompatActivity)!!.supportActionBar!!.hide()
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.stock)
 
     }
@@ -37,6 +34,11 @@ class ThirdFragment : Fragment() {
         return binding.root
 
     }
+
+
+
+
+
 
 
 }

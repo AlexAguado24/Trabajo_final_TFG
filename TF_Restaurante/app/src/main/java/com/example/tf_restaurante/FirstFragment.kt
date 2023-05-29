@@ -49,23 +49,20 @@ class FirstFragment : Fragment() {
                                 Snackbar.make(binding.root,"el usuario no existe",Snackbar.LENGTH_SHORT).show()
 
                             } else {
-
-                                if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("p0SdCJtGDjQTiRRmijRdf1pAJw42"))) {
+                                val bundle = Bundle()
+                                var email :String?=null
+                                if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
                                     Snackbar.make(binding.root, "JEFE INGRESANDO", Snackbar.LENGTH_SHORT).show()
-                                    findNavController().navigate(R.id.action_FirstFragment_to_thirdfragment)
-
                                 }else{
 
-                                    val bundle = Bundle()
-                                    var email = it.result.user!!.email
+
+                                    email = it.result.user!!.email
                                     email = binding.editNomLog.text.toString()
                                     bundle.putString("nombre", email)
                                     bundle.putString("uid", auth.currentUser!!.uid)
-                                    findNavController().navigate(
-                                        R.id.action_FirstFragment_to_secondActivity,
-                                        bundle
-                                    )
                                 }
+                                findNavController().navigate(R.id.action_FirstFragment_to_secondActivity,bundle)
+
                             }
                         }
                 } else {
