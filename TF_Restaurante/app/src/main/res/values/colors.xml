@@ -13,5 +13,6 @@
     <color name="green">#66ac92</color>
     <color name="grey">#686077</color>
     <color name="colorRed">#776869</color>
+    <color name="cardview_dark_background1">#FF424242</color>
 
 </resources>

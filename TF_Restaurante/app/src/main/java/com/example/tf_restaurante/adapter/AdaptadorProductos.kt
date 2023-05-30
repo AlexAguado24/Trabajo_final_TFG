@@ -1,5 +1,7 @@
 package com.example.tf_restaurante.adapter
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +53,7 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
 
     }
 
+    @SuppressLint("SuspiciousIndentation", "ResourceType")
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         var producto:Producto=listado.get(position)
        Glide.with(contexto).load(producto.imagen).into(holder.imagenProducto)
@@ -64,7 +68,8 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
 
 
             holder.itemView.setOnClickListener {
-                val dialogo = DialogoProducto.newInstance(listado[position])
+
+            val dialogo = DialogoProducto.newInstance(listado[position])
 
                 dialogo.show(soporteF,"")
 

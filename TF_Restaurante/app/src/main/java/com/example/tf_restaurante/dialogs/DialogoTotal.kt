@@ -20,6 +20,7 @@ import kotlin.math.roundToInt
 
 
 import android.content.Intent
+import android.util.Log
 import com.example.tf_restaurante.model.Producto
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -29,7 +30,9 @@ import com.google.firebase.database.ValueEventListener
 
 
 import java.util.*
-import javax.mail.*
+import kotlin.collections.ArrayList
+
+//import javax.mail.*
 
 class DialogoTotal : DialogFragment(), View.OnClickListener {
 
@@ -43,7 +46,11 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
     private lateinit var btnAtras: Button
     private lateinit var totDoub: TextView
     private lateinit var totTex: TextView
+    private lateinit var fonTVerde: TextView
+
     lateinit var acTot: String
+
+
 
     lateinit var nombreUser: String
     var roundoff: Double = 0.0
@@ -51,6 +58,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
 
     lateinit var arrayCompa: ArrayList<ProductoTotal>
+    lateinit var arrayPro: ArrayList<Producto>
 
     //   TODO
     var tuSaldo = 3000
@@ -60,14 +68,11 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
     //DONDE QUIERO RECIBIR
     companion object {
-        fun newInstance(
-            producTot: ArrayList<ProductoTotal>,
-            acum: Double,
-            nombre: String
-        ): DialogoTotal {
+        fun newInstance(producTot: ArrayList<ProductoTotal>,acum: Double,nombre: String,produc:ArrayList<Producto>): DialogoTotal {
             val dialogo = DialogoTotal()
             val args = Bundle()
             args.putSerializable("producTot", producTot)
+            args.putSerializable("produc", produc)
             args.putSerializable("acumulador", acum)
             args.putSerializable("nombre", nombre)
             dialogo.arguments = args
@@ -80,6 +85,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
 
         arrayCompa = this.arguments?.getSerializable("producTot") as ArrayList<ProductoTotal>
+        arrayPro = this.arguments?.getSerializable("produc") as ArrayList<Producto>
         super.onAttach(context)
         vista = LayoutInflater.from(context).inflate(R.layout.dialogo_total, null)
 
@@ -99,6 +105,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
         btnAtras = vista.findViewById(R.id.btn_atras_t)
         totDoub = vista.findViewById(R.id.total_doub_item)
         totTex = vista.findViewById(R.id.total_item)
+        fonTVerde = vista.findViewById(R.id.tex_verde)
         recycler_Tot = vista.findViewById(R.id.recycler_total)
         auth = FirebaseAuth.getInstance();
 
@@ -113,8 +120,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
             btnPagar.setText("CARGAR")
             totDoub.setText("")
             totTex.setText("")
-
-
+            fonTVerde.setBackgroundColor(resources.getColor(R.color.cardview_dark_background1))
         }
 
 
@@ -123,6 +129,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+
         when (v!!.id) {
 
             R.id.btn_pagar_t -> {
@@ -131,26 +138,59 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
 
 
+                var prodRec: Int = 0
                 if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
+                    fun comparo(tit_hijo:String) {
 
-                  //TODO CARGAR PRODUCTO
+                        for (i in arrayPro) {
+
+                            if (i.titulo.equals(tit_hijo)){
+                                Log.v("ver0", i.stock.toString() + " Prai")
+                                prodRec = i.stock.toString().toInt()
+                            }
+                        }
+                    }
 
 
-                    if (db.getReference().equals("comidas")) {
-                        db.getReference("comidas")
-                        .child("productos")
-                        db.reference.setValue(Producto(50,"http://www.olnasa.com/archivos/noticias/tipos-piedra-natural_257100.jpg",30.0,12,"PIEDRA"))
-
-                    }else if (db.getReference("bebidas").equals("bebidas")) {
-
-                        db.getReference("bebidas")
-                        .child("productos")
-
-                    }else if (db.getReference("postres").equals("postres")) {
-                        db.getReference("postres")
-                        .child("productos")
+                    fun agregoStock(tit_hijo:String,valor:Int){
+                        var prodReferen=db.getReference("bebidas")
+                            .child("productos")
+                            .child(tit_hijo)
+                            .child("stock")
+                        prodReferen.setValue(valor+prodRec)
 
                     }
+
+
+
+                    //TODO PONER IQUALS  Y SUMAR STOCK A LOS QUE YA TENIAMOS
+                    for (i in arrayCompa) {
+                        comparo(i.titulo.toString())
+                        agregoStock(i.titulo.toString(),i.cantProducto.toString().toInt())
+
+                        }
+
+
+
+
+
+
+                    //TODO CARGAR STOCK DE A 1
+               /*     var prodReferen=db.getReference("bebidas")
+                        .child("productos")
+                        .child("Fanta limon")
+                        .child("stock")*/
+
+                    //prodReferen.setValue(300)
+
+
+
+
+
+
+
+
+
 
 
                     Snackbar.make(vista, "PRODUCTOS CARGADOS!", Snackbar.LENGTH_SHORT).show()

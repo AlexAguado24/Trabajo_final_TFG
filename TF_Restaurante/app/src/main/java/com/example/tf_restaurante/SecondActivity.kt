@@ -91,9 +91,9 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
         aryProductosTot = ArrayList()
         arrayProdGuar = ArrayList()
         nombre = intent.extras!!.getString("nombre")
+        //uid = intent.extras!!.getString("uid")
         adaptador = AdaptadorProductos(this, aryProductos, supportFragmentManager)
         adaptadorTot = AdaptadorTotal(this, arrayProdGuar)
-
 
     }
 
@@ -108,7 +108,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                         acum = acum + i.valorTotal.toString().toDouble()
                     }
 
-                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum,nombre.toString())
+                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum,nombre.toString(),aryProductos)
 
                         adaptadorTot.notifyDataSetChanged()
 
