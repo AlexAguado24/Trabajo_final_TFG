@@ -17,28 +17,23 @@ import com.example.tf_restaurante.adapter.AdaptadorTotal
 import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
-
-
 import android.content.Intent
 import android.util.Log
 import com.example.tf_restaurante.model.Producto
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+
 
 
 import java.util.*
 import kotlin.collections.ArrayList
-
-//import javax.mail.*
 
 class DialogoTotal : DialogFragment(), View.OnClickListener {
 
     private lateinit var db: FirebaseDatabase
     private lateinit var adaptador: AdaptadorTotal
     lateinit var aryProduc_tot: ArrayList<ProductoTotal>
+    lateinit var aryProBtn: ArrayList<String>
     lateinit var productoTotal: ProductoTotal
     private lateinit var vista: View
     lateinit var recycler_Tot: RecyclerView
@@ -47,10 +42,8 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
     private lateinit var totDoub: TextView
     private lateinit var totTex: TextView
     private lateinit var fonTVerde: TextView
-
+    var arrLBtnrec:ArrayList<String> = ArrayList()
     lateinit var acTot: String
-
-
 
     lateinit var nombreUser: String
     var roundoff: Double = 0.0
@@ -60,17 +53,11 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
     lateinit var arrayCompa: ArrayList<ProductoTotal>
     lateinit var arrayPro: ArrayList<Producto>
 
-    //   TODO
-    var tuSaldo = 3000
-
-
-
-
     //DONDE QUIERO RECIBIR
     companion object {
+        val args = Bundle()
         fun newInstance(producTot: ArrayList<ProductoTotal>,acum: Double,nombre: String,produc:ArrayList<Producto>): DialogoTotal {
             val dialogo = DialogoTotal()
-            val args = Bundle()
             args.putSerializable("producTot", producTot)
             args.putSerializable("produc", produc)
             args.putSerializable("acumulador", acum)
@@ -78,20 +65,28 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
             dialogo.arguments = args
             return dialogo
         }
+        fun tipoProduc(prodPas:ArrayList<String>){
+           args.putSerializable("proBtn", prodPas)
+       }
+
     }
 
 
     override fun onAttach(context: Context) {
 
-
+        arrLBtnrec= this.arguments?.getSerializable("proBtn")  as ArrayList<String>
         arrayCompa = this.arguments?.getSerializable("producTot") as ArrayList<ProductoTotal>
         arrayPro = this.arguments?.getSerializable("produc") as ArrayList<Producto>
+
         super.onAttach(context)
         vista = LayoutInflater.from(context).inflate(R.layout.dialogo_total, null)
 
 
         acTot = this.arguments?.getDouble("acumulador").toString()
         nombreUser = this.arguments?.getString("nombre").toString();
+
+
+
 
 
     }
@@ -113,8 +108,6 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
         totDoub.setText(roundoff.toString())
 
-
-
         if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
 
             btnPagar.setText("CARGAR")
@@ -122,7 +115,10 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
             totTex.setText("")
             fonTVerde.setBackgroundColor(resources.getColor(R.color.cardview_dark_background1))
         }
+        for (i in arrayPro) {
+            Log.v("miro ", i.titulo.toString())
 
+        }
 
         return builder.create()
 
@@ -134,86 +130,36 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
             R.id.btn_pagar_t -> {
 
-
-
-
-
-                var prodRec: Int = 0
                 if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
-                    fun comparo(tit_hijo:String) {
 
-                        for (i in arrayPro) {
+                fun inter(btnNomRec:String,tit:String,valorSumado:Int){
+                    var prodReferen=db.getReference("productos")
+                        .child(btnNomRec)
+                        .child(tit)
+                        .child("stock")
+                    prodReferen.setValue(valorSumado)
+                }
 
-                            if (i.titulo.equals(tit_hijo)){
-                                Log.v("ver0", i.stock.toString() + " Prai")
-                                prodRec = i.stock.toString().toInt()
-                            }
-                        }
+                    for ((element1, bebComPos) in arrayCompa.zip(arrLBtnrec) ) {
+                        inter(bebComPos,element1.titulo.toString(),element1.cantProducto.toString().toInt()+element1.stockTienda.toString().toInt())
+                       println("Elemento 1: ${element1.titulo.toString()} + ${element1.titulo.toString()}  , Elemento 2: $bebComPos,Stock : ${element1.stockTienda.toString()} ")
                     }
-
-
-                    fun agregoStock(tit_hijo:String,valor:Int){
-                        var prodReferen=db.getReference("bebidas")
-                            .child("productos")
-                            .child(tit_hijo)
-                            .child("stock")
-                        prodReferen.setValue(valor+prodRec)
-
-                    }
-
-
-
-                    //TODO PONER IQUALS  Y SUMAR STOCK A LOS QUE YA TENIAMOS
-                    for (i in arrayCompa) {
-                        comparo(i.titulo.toString())
-                        agregoStock(i.titulo.toString(),i.cantProducto.toString().toInt())
-
-                        }
-
-
-
-
-
-
-                    //TODO CARGAR STOCK DE A 1
-               /*     var prodReferen=db.getReference("bebidas")
-                        .child("productos")
-                        .child("Fanta limon")
-                        .child("stock")*/
-
-                    //prodReferen.setValue(300)
-
-
-
-
-
-
-
-
-
-
-
                     Snackbar.make(vista, "PRODUCTOS CARGADOS!", Snackbar.LENGTH_SHORT).show()
-
                 }else{
                     Snackbar.make(vista, "Muchas gracias!", Snackbar.LENGTH_SHORT).show()
                     enviarCorreo()
-
                 }
-                //  activity?.finish()
-
-
             }
             R.id.btn_atras_t -> {
                 dismiss()
             }
-
-
         }
     }
 
     private fun instancias() {
+
         aryProduc_tot = ArrayList()
+        aryProBtn = ArrayList()
         productoTotal = ProductoTotal()
         aryProduc_tot.add(productoTotal)
         aryProduc_tot = arrayCompa
@@ -221,8 +167,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
         adaptador = AdaptadorTotal(requireContext(), aryProduc_tot)
 
         recycler_Tot.adapter = adaptador
-        recycler_Tot.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recycler_Tot.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
     }
 

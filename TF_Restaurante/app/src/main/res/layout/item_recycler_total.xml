@@ -73,6 +73,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/prec_uni_item" />
 
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/item_Stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        android:gravity="end"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/prec_uni_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/prec_uni_item" />
 
 
 

@@ -21,6 +21,7 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
     private lateinit var db: FirebaseDatabase
     private lateinit var adaptador: AdaptadorTotal
     lateinit var aryProductos: ArrayList<ProductoTotal>
+    lateinit var aryProBtn: ArrayList<String>
     lateinit var vista: View
     private lateinit var auth: FirebaseAuth
 
@@ -32,6 +33,8 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
         var titulo: TextView;
         var preUn: TextView;
         var valTot: TextView;
+        var valStock: TextView;
+
 
 
 
@@ -41,6 +44,7 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
             titulo=itemView.findViewById(R.id.titulo_item)
             preUn=itemView.findViewById(R.id.prec_uni_item)
             valTot=itemView.findViewById(R.id.valor_tot_item)
+            valStock=itemView.findViewById(R.id.item_Stock)
 
 
             db = FirebaseDatabase.getInstance("https://restaurante-tfg-default-rtdb.firebaseio.com/")
@@ -51,6 +55,7 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
 
     private fun instancias() {
         aryProductos = ArrayList()
+        aryProBtn = ArrayList()
         adaptador = AdaptadorTotal(context,aryProductos)
     }
 
@@ -85,6 +90,7 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
             holder.titulo.setText(producto_T.titulo.toString())
             holder.preUn.setText(producto_T.precio.toString())
             holder.valTot.setText(producto_T.valorTotal.toString())
+            holder.valStock.setText(producto_T.stockTienda.toString())
         }
 
 
@@ -96,4 +102,6 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
     override fun getItemCount(): Int {
         return lista.size;
     }
+
+
 }

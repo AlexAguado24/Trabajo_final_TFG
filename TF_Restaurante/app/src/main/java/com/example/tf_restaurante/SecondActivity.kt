@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.adapter.AdaptadorProductos
 import com.example.tf_restaurante.adapter.AdaptadorTotal
 import com.example.tf_restaurante.databinding.ActivitySecondBinding
@@ -31,8 +29,13 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     lateinit var aryProductosTot: ArrayList<Producto>
     lateinit var ProdGuar: ProductoTotal
     lateinit var arrayProdGuar: ArrayList<ProductoTotal>
+    lateinit var aryPrBtn: ArrayList<String>
+    lateinit var arrLAgrBtn: ArrayList<String>
     var acum = 0.0
     private lateinit var auth: FirebaseAuth;
+    var btnokSel:String=""
+  //  var aryAgrupProducSec:ArrayList<String> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -68,7 +71,8 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
            binding.btnPagar.setText("CARGAR PRODUCTOS")
         }
 
-
+        //LLAMO A LA FUN DEL ADAP Y LE ENVIO EL STRIG PARA QUE LO AGREGUE A LA BD
+        adaptador.agreBtn(btnokSel)
 
 
 
@@ -86,13 +90,15 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     }
 
     private fun instancias() {
+        arrLAgrBtn = ArrayList()
 
         aryProductos = ArrayList()
         aryProductosTot = ArrayList()
         arrayProdGuar = ArrayList()
+        aryPrBtn = ArrayList()
         nombre = intent.extras!!.getString("nombre")
         //uid = intent.extras!!.getString("uid")
-        adaptador = AdaptadorProductos(this, aryProductos, supportFragmentManager)
+        adaptador = AdaptadorProductos(this, aryProductos, supportFragmentManager,aryPrBtn)
         adaptadorTot = AdaptadorTotal(this, arrayProdGuar)
 
     }
@@ -116,23 +122,37 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                     acum-=acum
 
                 //TODO
+                //RECIBE EL VALOR CONFIRMADO Y LO GUARDA EN UN ARRAYLIST PARA ENVIARSELO AL DIALOGO TOTAL
 
 
 
+           //     aryAgrupProducSec.add(btnokSel)
+       /*         Log.v("Array", aryPrBtn.toString())
+                for (i in aryPrBtn) {
+                    Log.v("Array", i)
+                    Log.v("Array",  aryPrBtn.indexOf(i).toString())
+                }
+*/
+              /*  for (i in arrLAgrBtn) {
+                    Log.v("Array9",  " POS "+ arrLAgrBtn.indexOf(i).toString() +" VALOR " + i)
+
+                }*/
+                DialogoTotal.tipoProduc(arrLAgrBtn)
 
 
             }
             R.id.btn_bebida -> {
                 adaptador.listado.clear()
                 adaptador.notifyDataSetChanged()
-                db.getReference("bebidas")
-                    .child("productos")
+                db.getReference("productos")
+                    .child("bebidas")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (i in snapshot.children) { // acá saca el estado del nodo
                                 val producto = i.getValue(Producto::class.java)
                                 //Log.v("ver",i.toString())
-                                adaptador.verComida(producto!!)
+                                adaptador.prodIndiv(producto!!)
+
                             }
                         }
 
@@ -140,20 +160,20 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                             //ERROR EN LA COMUNICACIÓN
                         }
                     })
-
+                DialogoProducto.btnOkSelec("bebidas")
             }
 
             R.id.btn_comida -> {
                 adaptador.listado.clear()
                 adaptador.notifyDataSetChanged()
-                db.getReference("comidas")
-                    .child("productos")
+                db.getReference("productos")
+                    .child("comidas")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (i in snapshot.children) { // acá saca el estado del nodo
                                 val producto = i.getValue(Producto::class.java)
                                 // Log.v("salida", producto!!.precio.toString())
-                                adaptador.verComida(producto!!)
+                                adaptador.prodIndiv(producto!!)
                             }
                         }
 
@@ -161,19 +181,19 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                             //ERROR EN LA COMUNICACIÓN
                         }
                     })
-
+                DialogoProducto.btnOkSelec("comidas")
             }
             R.id.btn_postre -> {
                 adaptador.listado.clear()
                 adaptador.notifyDataSetChanged()
-                db.getReference("postres")
-                    .child("productos")
+                db.getReference("productos")
+                    .child("postres")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (i in snapshot.children) { // acá saca el estado del nodo
                                 val producto = i.getValue(Producto::class.java)
                                 //Log.v("salida", producto!!.precio.toString())
-                                adaptador.verComida(producto!!)
+                                adaptador.prodIndiv(producto!!)
                             }
                         }
 
@@ -181,7 +201,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                             //ERROR EN LA COMUNICACIÓN
                         }
                     })
-
+                DialogoProducto.btnOkSelec("postres")
             }
 
 
@@ -194,5 +214,19 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
         arrayProdGuar.add(ProdGuar)
 
     }
+
+    override fun onEnvBtnConfir(envBtn: String) {
+        arrLAgrBtn.add(envBtn)
+      //  Log.v("Array",envBtn+" ER")
+        for (i in arrLAgrBtn) {
+            Log.v("Array7",  " POS "+ arrLAgrBtn.indexOf(i).toString() +" VALOR " + i)
+
+        }
+
+    }
+
+    /* override fun onEnvBtnConfir(envBtn: String) {
+         btnokSel=envBtn
+     }*/
 
 }

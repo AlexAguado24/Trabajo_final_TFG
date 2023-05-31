@@ -2,7 +2,6 @@ package com.example.tf_restaurante.dialogs
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +10,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
-import com.example.tf_restaurante.SecondActivity
+import com.example.tf_restaurante.adapter.AdaptadorProductos
 import com.example.tf_restaurante.model.Producto
 import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
@@ -28,20 +26,29 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
     lateinit var listenerT: OnProductoTotal
     private lateinit var auth: FirebaseAuth;
-
+    lateinit var btnokSel:String
+  //  private lateinit var adaptadorPr: AdaptadorProductos
+    var arrayProd: ArrayList<Producto> = ArrayList()
+    var aryPrBtn: ArrayList<String> = ArrayList()
 
     interface OnProductoTotal {
         fun onProductoTotal(productoTotal: ProductoTotal)
 
+        fun onEnvBtnConfir(envBtn: String)
+
+
     }
 
     companion object {
+        val args = Bundle()
         fun newInstance(producto: Producto): DialogoProducto {
-            val args = Bundle()
             args.putSerializable("producto", producto)
             val fragment = DialogoProducto()
             fragment.arguments = args
             return fragment
+        }
+        fun btnOkSelec (btnSel:String){
+            args.putSerializable("selBtn", btnSel)
         }
     }
 
@@ -67,6 +74,8 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         super.onAttach(context)
         vista = LayoutInflater.from(context).inflate(R.layout.dialogo_producto, null)
         listenerT = requireContext() as OnProductoTotal
+
+     //   adaptadorPr = AdaptadorProductos(context, aryProductos, supportFragmentManager,aryPrBtn)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -76,18 +85,7 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         instancias()
         auth = FirebaseAuth.getInstance();
         return builder.create()
-
-
-
-
-
-
     }
-
-
-
-
-
 
 
     fun instancias() {
@@ -109,7 +107,7 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     override fun onStart() {
 
         productoGr = this.arguments?.getSerializable("producto") as Producto
-
+        btnokSel= this.arguments?.getString("selBtn").toString()
         valorGral = productoGr.precio!!.toDouble()
 
 
@@ -167,7 +165,6 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
             }
             R.id.btn_ok -> {
 
-
                 if (cont > 0) {
                     arrayPrecio = ArrayList()
                     arrayPrecio.add((valorGral) * cont.toDouble())
@@ -187,6 +184,7 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                         productoGr.titulo,
                         productoGr.precio,
                         roundoff,
+                        productoGr.stock
 
                       //  totalFinal.toString()
 
@@ -196,6 +194,21 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                    // Log.v("Total",totalFinal.toString())
                     // Log.v("salida", producto!!.precio.toString())
                    // Snackbar.make(vista, "Total = ${redondeo} ", Snackbar.LENGTH_SHORT).show()
+
+
+//TODO
+                    if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))){
+                        //SI SOY ADMIN RECIVO DESDE EL SECONDA. EL VALOR DEL BTN ,COMIDA ETC Y SE LO VUELVO A ENVIAR AL SECONDA. CUANDO CONFIRMA LA COMPRA
+                        //NO SE LO PUEDE PASAR AL SECOND PORQUE SOLO RECIBE 1 SOLO VALOR Y LO PISA,POR ESO SE LO ENVIO AL ADAPTADOR
+                        //ENVIO DE A 1 Y AL SECONDA.EL SECOND LLAMA AL LA FUN DEL ADAPTADOR Y LO AGREGA
+
+                        listenerT.onEnvBtnConfir(btnokSel)
+                     //   Log.v("Array", btnokSel)
+             //           adaptadorPr.agreBtn(btnokSel)
+
+                    }
+
+
 
                     dismiss()
                 } else {

@@ -1,7 +1,6 @@
 package com.example.tf_restaurante.adapter
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.model.Producto
 
 
 
-class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>,var soporteF:FragmentManager): RecyclerView.Adapter<AdaptadorProductos.MyHolder>() {
+class AdaptadorProductos(
+    var contexto: Context, var listado: ArrayList<Producto>,
+    var soporteF:FragmentManager,
+    var lisProd: ArrayList<String>): RecyclerView.Adapter<AdaptadorProductos.MyHolder>() {
 
 
 
@@ -85,9 +84,14 @@ class AdaptadorProductos(var contexto: Context, var listado: ArrayList<Producto>
     override fun getItemCount(): Int {
         return listado.size
     }
-    fun verComida(producto: Producto){
+    fun prodIndiv(producto: Producto){
         listado.add(producto)
         notifyItemInserted(listado.size-1)
+    }
+
+    fun agreBtn(arrLProdBtn: String){
+        lisProd.add(arrLProdBtn)
+        notifyItemInserted(lisProd.size-1)
     }
 
 
