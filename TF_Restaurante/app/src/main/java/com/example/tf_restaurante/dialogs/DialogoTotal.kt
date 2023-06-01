@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 import android.content.Intent
 import android.util.Log
+import android.view.Window
 import com.example.tf_restaurante.model.Producto
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -27,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.system.exitProcess
 
 class DialogoTotal : DialogFragment(), View.OnClickListener {
 
@@ -144,12 +146,20 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
                         inter(bebComPos,element1.titulo.toString(),element1.cantProducto.toString().toInt()+element1.stockTienda.toString().toInt())
                       // println("Elemento 1: ${element1.titulo.toString()} + ${element1.titulo.toString()}  , Elemento 2: $bebComPos,Stock : ${element1.stockTienda.toString()} ")
                     }
-                    Snackbar.make(vista, "PRODUCTOS CARGADOS!", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(v, "PRODUCTOS CARGADOS!", Snackbar.LENGTH_SHORT).show()
+
+                   // dismiss()
+
+                    //TODO SEGUIR CARGANDO  SI DICE QUE NO EXITPROCESS SI SI , VACIAR LA LISTA
+                   exitProcess(0)
+
+
                 }else{
-                    Snackbar.make(vista, "Muchas gracias!", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(v, "Muchas gracias!", Snackbar.LENGTH_SHORT).show()
                     enviarCorreo()
+              //      dismiss()
                 }
-                dismiss()
+
             }
             R.id.btn_atras_t -> {
                 dismiss()

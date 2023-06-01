@@ -10,8 +10,10 @@ import com.example.tf_restaurante.adapter.AdaptadorTotal
 import com.example.tf_restaurante.databinding.ActivitySecondBinding
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.dialogs.DialogoTotal
+import com.example.tf_restaurante.dialogs.DialogoConfirma
 import com.example.tf_restaurante.model.Producto
 import com.example.tf_restaurante.model.ProductoTotal
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,13 +29,14 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     private lateinit var adaptadorTot: AdaptadorTotal
     lateinit var aryProductos: ArrayList<Producto>
     lateinit var aryProductosTot: ArrayList<Producto>
-    var ProdGuar: ProductoTotal? =null
+    lateinit var ProdGuar: ProductoTotal
     lateinit var arrayProdGuar: ArrayList<ProductoTotal>
     lateinit var aryPrBtn: ArrayList<String>
     lateinit var arrLAgrBtn: ArrayList<String>
     var acum = 0.0
     private lateinit var auth: FirebaseAuth;
     var btnokSel:String=""
+    lateinit var productoGr:Producto
   //  var aryAgrupProducSec:ArrayList<String> = ArrayList()
 
 
@@ -118,7 +121,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
 
                //     DialogoProducto.prodSelec(ProdGuar)
 
-                    Log.v("PRGUAR",ProdGuar!!.titulo.toString())
+                  //  Log.v("PRGUAR",ProdGuar!!.titulo.toString())
 
 
                         adaptadorTot.notifyDataSetChanged()
@@ -216,6 +219,28 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
         }
 
     }
+
+    override fun onCuadroConfir(cuadConfir: DialogoConfirma,productoDP:Producto) {
+        cuadConfir.show(supportFragmentManager,"")
+        productoGr=productoDP
+    }
+
+   /* override fun OnDialogSelected(seleccion: Boolean) {
+        if (seleccion){
+            Snackbar.make(binding.root,"seleccionado true", Snackbar.LENGTH_SHORT).show()
+
+
+                var prodReferen = db.getReference("productos")
+                    .child(btnokSel)
+                    .child(productoGr.titulo.toString())
+                prodReferen.setValue(null)
+
+        }else{
+            Snackbar.make(binding.root,"tex false", Snackbar.LENGTH_SHORT).show()
+
+        }
+    }*/
+
 
     /* override fun onEnvBtnConfir(envBtn: String) {
          btnokSel=envBtn

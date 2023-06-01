@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -47,12 +46,16 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     private lateinit var arrayPrecio: ArrayList<Double>
     var acumTot = 0.0
     lateinit var productoGr: Producto
-  //  private lateinit var mayor: ImageButton
+    var botSel: Boolean = true
+
+    //  private lateinit var mayor: ImageButton
 
     interface OnProductoTotal {
         fun onProductoTotal(productoTotal: ProductoTotal)
 
         fun onEnvBtnConfir(envBtn: String)
+
+        fun onCuadroConfir(cuadConfir: DialogoConfirma,productoGr:Producto)
 
 
     }
@@ -68,6 +71,9 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
         fun btnOkSelec(btnSel: String) {
             args.putSerializable("selBtn", btnSel)
+        }
+        fun OnGetDialConfir(seleccion: Boolean) {
+            args.putSerializable("selBool", seleccion)
         }
 
     }
@@ -113,6 +119,8 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 //        prducTot = this.arguments?.getSerializable("selProd") as ProductoTotal
         productoGr = this.arguments?.getSerializable("producto") as Producto
         btnokSel = this.arguments?.getString("selBtn").toString()
+        botSel = this.arguments?.getString("selBool").toBoolean()
+
         valorGral = productoGr.precio!!.toDouble()
 
 
@@ -123,7 +131,6 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
             Glide.with(requireContext()).load(productoGr.imagen)
                 .apply(RequestOptions.circleCropTransform()).into(img)
             producto.setText(productoGr.titulo!!.toString())
-            elim.setText("cargar")
             elim.visibility=View.VISIBLE
 
         } else {
@@ -136,7 +143,6 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                 .apply(RequestOptions.circleCropTransform()).into(img)
 
             producto.setText(productoGr.titulo!!.toString())
-
 
         }
 
@@ -164,7 +170,7 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
                 //TODO CUADRO DE DIALOGO
 
-                var notificacion = Snackbar.make(vista,"¿Seguro que desea eliminar? " ,Snackbar.LENGTH_INDEFINITE)
+        /*      var notificacion = Snackbar.make(vista,"¿Seguro que desea eliminar? " ,Snackbar.LENGTH_INDEFINITE)
                 notificacion.setAction("Confirmar") {
                     var prodReferen = db.getReference("productos")
                         .child(btnokSel)
@@ -173,6 +179,28 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
                 }
                 notificacion.show()
+
+
+                */
+
+                var dialogoConfirma=DialogoConfirma();
+
+
+                listenerT.onCuadroConfir(dialogoConfirma,productoGr)
+
+                if (botSel){
+                    Snackbar.make(vista,"seleccionado true", Snackbar.LENGTH_SHORT).show()
+
+
+                    var prodReferen = db.getReference("productos")
+                        .child(btnokSel)
+                        .child(productoGr.titulo.toString())
+                    prodReferen.setValue(null)
+
+                }else{
+                    Snackbar.make(vista,"tex false", Snackbar.LENGTH_SHORT).show()
+
+                }
 
 
 
@@ -201,6 +229,43 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
                 if (cont > 0) {
 
+
+                    fun cargoDial(){
+                //### ME CARGA EN EL CUADRO DE DIALOGO SOLO SI EL VALOR SELEC ES INFERIOR AL VALOR DE STOCK
+                        arrayPrecio = ArrayList()
+                        arrayPrecio.add((valorGral) * cont.toDouble())
+                        for (i in arrayPrecio) {
+                            acumTot += i
+                        }
+
+                        var prodTot: ProductoTotal
+                        //redondeo con el roundoff
+                        var roundoff =
+                            (acumTot * 100).roundToInt().toDouble() / 100
+
+                        prodTot = (ProductoTotal(
+                            productoGr.imagen,
+                            cont,
+                            productoGr.titulo,
+                            productoGr.precio,
+                            roundoff,
+                            productoGr.stock
+
+
+                        ))
+                        if (prodTot.cantProducto.toString().toInt()>0) {
+                            listenerT.onProductoTotal(prodTot)
+                        }
+
+                        cont=0
+
+                //### FIN DE  ME CARGA EN EL CUADRO DE DIALOGO SOLO SI EL VALOR SELEC ES INFERIOR AL VALOR DE STOCK
+                    }
+
+
+
+
+
                     if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2" ))) {
 
                         //SI SOY ADMIN RECIVO DESDE EL SECONDA. EL VALOR DEL BTN ,COMIDA ETC Y SE LO VUELVO A ENVIAR AL SECONDA. CUANDO CONFIRMA LA COMPRA
@@ -210,8 +275,10 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                         listenerT.onEnvBtnConfir(btnokSel)
                         //   Log.v("Array", btnokSel)
                         //           adaptadorPr.agreBtn(btnokSel)
-
-
+                        //##LLAMO A LA FUN QUE CARGA LOS LOS ITEMS
+                        cargoDial()
+                        dismiss()
+                        //TODO TIENE QUE HABER UN DISSMIS PARA EL ADMIN Y OTRO PARA EL USUARIO-NO SE PUEDE PONER AL FINAL ANTES DE TERMINAR LA PULSACIÓN DEL BTN PORQUE PORQUE NO COMPILA
                     } else {
 
 
@@ -244,35 +311,12 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
                                             inter(  btnokSel, productoGr.titulo.toString(),(stockI - cont) )
 
-                                            //### ME CARGA EN EL CUADRO DE DIALOGO SOLO SI EL VALOR SELEC ES INFERIOR AL VALOR DE STOCK
-                                            arrayPrecio = ArrayList()
-                                            arrayPrecio.add((valorGral) * cont.toDouble())
-                                            for (i in arrayPrecio) {
-                                                acumTot += i
-                                            }
-
-                                            var prodTot: ProductoTotal
-                                          //redondeo con el roundoff
-                                            var roundoff =
-                                                (acumTot * 100).roundToInt().toDouble() / 100
-
-                                            prodTot = (ProductoTotal(
-                                                productoGr.imagen,
-                                                cont,
-                                                productoGr.titulo,
-                                                productoGr.precio,
-                                                roundoff,
-                                                productoGr.stock
-
-
-                                            ))
-                                            if (prodTot.cantProducto.toString().toInt()>0) {
-                                                listenerT.onProductoTotal(prodTot)
-                                            }
-
-                                            cont=0
+                                            //##LLAMO A LA FUN QUE CARGA LOS LOS ITEMS
+                                            cargoDial()
                                             dismiss()
-                                            //### FIN DE  ME CARGA EN EL CUADRO DE DIALOGO SOLO SI EL VALOR SELEC ES INFERIOR AL VALOR DE STOCK
+                                            //TODO TIENE QUE HABER UN DISSMIS PARA EL ADMIN Y OTRO PARA EL USUARIO-NO SE PUEDE PONER AL FINAL ANTES DE TERMINAR LA PULSACIÓN DEL BTN PORQUE PORQUE NO COMPILA
+
+
 
 
                                         } else if (stockI == 0 && cont > 0) {
