@@ -85,6 +85,8 @@ class AdaptadorTotal(var context: Context, var lista: ArrayList<ProductoTotal>):
 
 
         }else{
+
+
             Glide.with(context).load(producto_T.imagen).apply(RequestOptions.circleCropTransform()).into(holder.imgTot)
             holder.cantidad.setText(producto_T.cantProducto.toString())
             holder.titulo.setText(producto_T.titulo.toString())

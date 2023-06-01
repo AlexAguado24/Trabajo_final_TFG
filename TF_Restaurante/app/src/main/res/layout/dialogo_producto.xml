@@ -27,13 +27,6 @@
         android:layout_margin="3dp"
         >
 
-
-   <!-- android:background="@drawable/style"-->
-        <!--android:paddingHorizontal="7dp"-->
-        <!--android:background="@color/cardview_dark_background"-->
-        <!-- android:background="@null"-->
-        <!-- android:background="@null"-->
-        <!--  android:background="@android:color/transparent""-->
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="47dp"
@@ -135,7 +128,25 @@
             android:text="Pedir"
             android:textSize="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btn_eliminar"
+            android:visibility="invisible"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/bk_tot1"
+            android:padding="8dp"
+            android:text="Eliminar"
+            android:textSize="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_ok"
+            app:layout_constraintStart_toEndOf="@+id/btn_cancel" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

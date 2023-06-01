@@ -27,7 +27,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     private lateinit var adaptadorTot: AdaptadorTotal
     lateinit var aryProductos: ArrayList<Producto>
     lateinit var aryProductosTot: ArrayList<Producto>
-    lateinit var ProdGuar: ProductoTotal
+    var ProdGuar: ProductoTotal? =null
     lateinit var arrayProdGuar: ArrayList<ProductoTotal>
     lateinit var aryPrBtn: ArrayList<String>
     lateinit var arrLAgrBtn: ArrayList<String>
@@ -114,7 +114,12 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                         acum = acum + i.valorTotal.toString().toDouble()
                     }
 
-                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum,nombre.toString(),aryProductos)
+                    val dialogoTot = DialogoTotal.newInstance(arrayProdGuar, acum,nombre.toString()/*,aryProductos*/)
+
+               //     DialogoProducto.prodSelec(ProdGuar)
+
+                    Log.v("PRGUAR",ProdGuar!!.titulo.toString())
+
 
                         adaptadorTot.notifyDataSetChanged()
 
@@ -124,19 +129,6 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
                 //TODO
                 //RECIBE EL VALOR CONFIRMADO Y LO GUARDA EN UN ARRAYLIST PARA ENVIARSELO AL DIALOGO TOTAL
 
-
-
-           //     aryAgrupProducSec.add(btnokSel)
-       /*         Log.v("Array", aryPrBtn.toString())
-                for (i in aryPrBtn) {
-                    Log.v("Array", i)
-                    Log.v("Array",  aryPrBtn.indexOf(i).toString())
-                }
-*/
-              /*  for (i in arrLAgrBtn) {
-                    Log.v("Array9",  " POS "+ arrLAgrBtn.indexOf(i).toString() +" VALOR " + i)
-
-                }*/
                 DialogoTotal.tipoProduc(arrLAgrBtn)
 
 
@@ -211,7 +203,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
 
     override fun onProductoTotal(productoTotal: ProductoTotal) {
         ProdGuar = productoTotal
-        arrayProdGuar.add(ProdGuar)
+        arrayProdGuar.add(ProdGuar!!)
 
     }
 

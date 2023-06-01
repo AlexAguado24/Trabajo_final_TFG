@@ -51,15 +51,15 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
 
     lateinit var arrayCompa: ArrayList<ProductoTotal>
-    lateinit var arrayPro: ArrayList<Producto>
+   // lateinit var arrayPro: ArrayList<Producto>
 
     //DONDE QUIERO RECIBIR
     companion object {
         val args = Bundle()
-        fun newInstance(producTot: ArrayList<ProductoTotal>,acum: Double,nombre: String,produc:ArrayList<Producto>): DialogoTotal {
+        fun newInstance(producTot: ArrayList<ProductoTotal>,acum: Double,nombre: String/*,produc:ArrayList<Producto>*/): DialogoTotal {
             val dialogo = DialogoTotal()
             args.putSerializable("producTot", producTot)
-            args.putSerializable("produc", produc)
+          //  args.putSerializable("produc", produc)
             args.putSerializable("acumulador", acum)
             args.putSerializable("nombre", nombre)
             dialogo.arguments = args
@@ -76,7 +76,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
         arrLBtnrec= this.arguments?.getSerializable("proBtn")  as ArrayList<String>
         arrayCompa = this.arguments?.getSerializable("producTot") as ArrayList<ProductoTotal>
-        arrayPro = this.arguments?.getSerializable("produc") as ArrayList<Producto>
+      //  arrayPro = this.arguments?.getSerializable("produc") as ArrayList<Producto>
 
         super.onAttach(context)
         vista = LayoutInflater.from(context).inflate(R.layout.dialogo_total, null)
@@ -115,10 +115,10 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
             totTex.setText("")
             fonTVerde.setBackgroundColor(resources.getColor(R.color.cardview_dark_background1))
         }
-        for (i in arrayPro) {
+    /*    for (i in arrayPro) {
             Log.v("miro ", i.titulo.toString())
 
-        }
+        }*/
 
         return builder.create()
 
@@ -142,13 +142,14 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
                     for ((element1, bebComPos) in arrayCompa.zip(arrLBtnrec) ) {
                         inter(bebComPos,element1.titulo.toString(),element1.cantProducto.toString().toInt()+element1.stockTienda.toString().toInt())
-                       println("Elemento 1: ${element1.titulo.toString()} + ${element1.titulo.toString()}  , Elemento 2: $bebComPos,Stock : ${element1.stockTienda.toString()} ")
+                      // println("Elemento 1: ${element1.titulo.toString()} + ${element1.titulo.toString()}  , Elemento 2: $bebComPos,Stock : ${element1.stockTienda.toString()} ")
                     }
                     Snackbar.make(vista, "PRODUCTOS CARGADOS!", Snackbar.LENGTH_SHORT).show()
                 }else{
                     Snackbar.make(vista, "Muchas gracias!", Snackbar.LENGTH_SHORT).show()
                     enviarCorreo()
                 }
+                dismiss()
             }
             R.id.btn_atras_t -> {
                 dismiss()
