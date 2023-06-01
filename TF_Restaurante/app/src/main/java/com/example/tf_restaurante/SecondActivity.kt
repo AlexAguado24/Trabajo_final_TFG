@@ -10,7 +10,6 @@ import com.example.tf_restaurante.adapter.AdaptadorTotal
 import com.example.tf_restaurante.databinding.ActivitySecondBinding
 import com.example.tf_restaurante.dialogs.DialogoProducto
 import com.example.tf_restaurante.dialogs.DialogoTotal
-import com.example.tf_restaurante.dialogs.DialogoConfirma
 import com.example.tf_restaurante.model.Producto
 import com.example.tf_restaurante.model.ProductoTotal
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +19,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProducto.OnProductoTotal {
+class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProducto.OnProductoTotal,DialogoTotal.OnDialTotal {
     private var nombre: String? = null
     private var uid: String? = null
     private lateinit var binding: ActivitySecondBinding
@@ -37,6 +36,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
     private lateinit var auth: FirebaseAuth;
     var btnokSel:String=""
     lateinit var productoGr:Producto
+    var bool:Boolean=true
   //  var aryAgrupProducSec:ArrayList<String> = ArrayList()
 
 
@@ -103,6 +103,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
         //uid = intent.extras!!.getString("uid")
         adaptador = AdaptadorProductos(this, aryProductos, supportFragmentManager,aryPrBtn)
         adaptadorTot = AdaptadorTotal(this, arrayProdGuar)
+
 
     }
 
@@ -220,27 +221,29 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener, DialogoProduct
 
     }
 
-    override fun onCuadroConfir(cuadConfir: DialogoConfirma,productoDP:Producto) {
-        cuadConfir.show(supportFragmentManager,"")
-        productoGr=productoDP
+    override fun onRecreo() {
+
+        recreate()
+
     }
 
-   /* override fun OnDialogSelected(seleccion: Boolean) {
-        if (seleccion){
-            Snackbar.make(binding.root,"seleccionado true", Snackbar.LENGTH_SHORT).show()
+    override fun onRecreoDT() {
+        recreate()
+    }
 
+    /*   override fun onCuadroConfir(cuadConfir: DialogoConfirma,productoDP:Producto) {
+           cuadConfir.show(supportFragmentManager,"")
+           productoGr=productoDP
+       }
 
-                var prodReferen = db.getReference("productos")
-                    .child(btnokSel)
-                    .child(productoGr.titulo.toString())
-                prodReferen.setValue(null)
+       override fun onDialogSelected(seleccion: Boolean) {
 
-        }else{
-            Snackbar.make(binding.root,"tex false", Snackbar.LENGTH_SHORT).show()
+               bool=seleccion
 
-        }
-    }*/
+           DialogoProducto.onGetDialConfir(bool)
+       }
 
+   */
 
     /* override fun onEnvBtnConfir(envBtn: String) {
          btnokSel=envBtn

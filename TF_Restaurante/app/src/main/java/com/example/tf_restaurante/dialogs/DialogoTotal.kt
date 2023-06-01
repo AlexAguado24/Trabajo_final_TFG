@@ -54,6 +54,11 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
     lateinit var arrayCompa: ArrayList<ProductoTotal>
    // lateinit var arrayPro: ArrayList<Producto>
+   lateinit var listenerT: DialogoTotal.OnDialTotal
+    interface OnDialTotal {
+        fun onRecreoDT()
+    }
+
 
     //DONDE QUIERO RECIBIR
     companion object {
@@ -75,7 +80,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
 
     override fun onAttach(context: Context) {
-
+        listenerT = requireContext() as OnDialTotal
         arrLBtnrec= this.arguments?.getSerializable("proBtn")  as ArrayList<String>
         arrayCompa = this.arguments?.getSerializable("producTot") as ArrayList<ProductoTotal>
       //  arrayPro = this.arguments?.getSerializable("produc") as ArrayList<Producto>
@@ -151,12 +156,14 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
                    // dismiss()
 
                     //TODO SEGUIR CARGANDO  SI DICE QUE NO EXITPROCESS SI SI , VACIAR LA LISTA
-                   exitProcess(0)
-
+                 //  exitProcess(0)
+                    dismiss()
+                    listenerT.onRecreoDT()
 
                 }else{
                     Snackbar.make(v, "Muchas gracias!", Snackbar.LENGTH_SHORT).show()
                     enviarCorreo()
+                    exitProcess(0)
               //      dismiss()
                 }
 

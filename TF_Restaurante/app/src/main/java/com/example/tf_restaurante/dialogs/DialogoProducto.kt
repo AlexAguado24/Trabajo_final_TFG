@@ -46,7 +46,9 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     private lateinit var arrayPrecio: ArrayList<Double>
     var acumTot = 0.0
     lateinit var productoGr: Producto
-    var botSel: Boolean = true
+    var botSel:Boolean=true
+
+
 
     //  private lateinit var mayor: ImageButton
 
@@ -55,7 +57,9 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
         fun onEnvBtnConfir(envBtn: String)
 
-        fun onCuadroConfir(cuadConfir: DialogoConfirma,productoGr:Producto)
+        fun onRecreo()
+
+
 
 
     }
@@ -72,7 +76,7 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         fun btnOkSelec(btnSel: String) {
             args.putSerializable("selBtn", btnSel)
         }
-        fun OnGetDialConfir(seleccion: Boolean) {
+        fun onGetDialConfir(seleccion: Boolean) {
             args.putSerializable("selBool", seleccion)
         }
 
@@ -116,10 +120,10 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     }
 
     override fun onStart() {
-//        prducTot = this.arguments?.getSerializable("selProd") as ProductoTotal
+    //    prducTot = this.arguments?.getSerializable("selProd") as ProductoTotal
         productoGr = this.arguments?.getSerializable("producto") as Producto
         btnokSel = this.arguments?.getString("selBtn").toString()
-        botSel = this.arguments?.getString("selBool").toBoolean()
+        botSel = this.arguments?.getBoolean("selBool") as Boolean
 
         valorGral = productoGr.precio!!.toDouble()
 
@@ -170,37 +174,24 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
                 //TODO CUADRO DE DIALOGO
 
-        /*      var notificacion = Snackbar.make(vista,"¿Seguro que desea eliminar? " ,Snackbar.LENGTH_INDEFINITE)
+             var notificacion = Snackbar.make(vista,"¿Seguro que desea eliminar? " ,Snackbar.LENGTH_INDEFINITE)
                 notificacion.setAction("Confirmar") {
                     var prodReferen = db.getReference("productos")
                         .child(btnokSel)
                         .child(productoGr.titulo.toString())
                     prodReferen.setValue(null)
 
+                    dismiss()
+                    listenerT.onRecreo()
                 }
                 notificacion.show()
 
 
-                */
-
-                var dialogoConfirma=DialogoConfirma();
 
 
-                listenerT.onCuadroConfir(dialogoConfirma,productoGr)
-
-                if (botSel){
-                    Snackbar.make(vista,"seleccionado true", Snackbar.LENGTH_SHORT).show()
 
 
-                    var prodReferen = db.getReference("productos")
-                        .child(btnokSel)
-                        .child(productoGr.titulo.toString())
-                    prodReferen.setValue(null)
 
-                }else{
-                    Snackbar.make(vista,"tex false", Snackbar.LENGTH_SHORT).show()
-
-                }
 
 
 
@@ -350,3 +341,4 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
 
 }
+
