@@ -13,14 +13,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tf_restaurante.R
-import com.example.tf_restaurante.adapter.AdaptadorTotal
-import com.example.tf_restaurante.model.ProductoTotal
+import com.example.tf_restaurante.adapter.AdaptadorProdSelec
+import com.example.tf_restaurante.model.ProducSeleccionado
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 import android.content.Intent
-import android.util.Log
-import android.view.Window
-import com.example.tf_restaurante.model.Producto
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -30,13 +27,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
-class DialogoTotal : DialogFragment(), View.OnClickListener {
+class DialogoProdSelec : DialogFragment(), View.OnClickListener {
 
     private lateinit var db: FirebaseDatabase
-    private lateinit var adaptador: AdaptadorTotal
-    lateinit var aryProduc_tot: ArrayList<ProductoTotal>
+    private lateinit var adaptador: AdaptadorProdSelec
+    lateinit var aryProduc_tot: ArrayList<ProducSeleccionado>
     lateinit var aryProBtn: ArrayList<String>
-    lateinit var productoTotal: ProductoTotal
+
+    lateinit var producSeleccionado: ProducSeleccionado
     private lateinit var vista: View
     lateinit var recycler_Tot: RecyclerView
     private lateinit var btnPagar: Button
@@ -46,27 +44,23 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
     private lateinit var fonTVerde: TextView
     var arrLBtnrec:ArrayList<String> = ArrayList()
     lateinit var acTot: String
-
     lateinit var nombreUser: String
     var roundoff: Double = 0.0
     private lateinit var auth: FirebaseAuth
+    lateinit var arrayCompa: ArrayList<ProducSeleccionado>
+    lateinit var listenerT: DialogoProdSelec.OnRecreoProdSel
+    var stockAda: Int=0
 
-
-    lateinit var arrayCompa: ArrayList<ProductoTotal>
-   // lateinit var arrayPro: ArrayList<Producto>
-   lateinit var listenerT: DialogoTotal.OnDialTotal
-    interface OnDialTotal {
-        fun onRecreoDT()
+    interface OnRecreoProdSel {
+        fun onRecreoDS()
     }
 
-
-    //DONDE QUIERO RECIBIR
+    //Recibo
     companion object {
         val args = Bundle()
-        fun newInstance(producTot: ArrayList<ProductoTotal>,acum: Double,nombre: String/*,produc:ArrayList<Producto>*/): DialogoTotal {
-            val dialogo = DialogoTotal()
+        fun newInstance(producTot: ArrayList<ProducSeleccionado>, acum: Double, nombre: String): DialogoProdSelec {
+            val dialogo = DialogoProdSelec()
             args.putSerializable("producTot", producTot)
-          //  args.putSerializable("produc", produc)
             args.putSerializable("acumulador", acum)
             args.putSerializable("nombre", nombre)
             dialogo.arguments = args
@@ -78,23 +72,16 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
     }
 
-
     override fun onAttach(context: Context) {
-        listenerT = requireContext() as OnDialTotal
+        listenerT = requireContext() as OnRecreoProdSel
+
         arrLBtnrec= this.arguments?.getSerializable("proBtn")  as ArrayList<String>
-        arrayCompa = this.arguments?.getSerializable("producTot") as ArrayList<ProductoTotal>
-      //  arrayPro = this.arguments?.getSerializable("produc") as ArrayList<Producto>
 
+        arrayCompa = this.arguments?.getSerializable("producTot") as ArrayList<ProducSeleccionado>
         super.onAttach(context)
-        vista = LayoutInflater.from(context).inflate(R.layout.dialogo_total, null)
-
-
+        vista = LayoutInflater.from(context).inflate(R.layout.dialogo_prod_sel, null)
         acTot = this.arguments?.getDouble("acumulador").toString()
         nombreUser = this.arguments?.getString("nombre").toString();
-
-
-
-
 
     }
 
@@ -110,9 +97,7 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
         fonTVerde = vista.findViewById(R.id.tex_verde)
         recycler_Tot = vista.findViewById(R.id.recycler_total)
         auth = FirebaseAuth.getInstance();
-
         roundoff = (acTot.toDouble() * 100).roundToInt().toDouble() / 100
-
         totDoub.setText(roundoff.toString())
 
         if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
@@ -121,14 +106,9 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
             totDoub.setText("")
             totTex.setText("")
             fonTVerde.setBackgroundColor(resources.getColor(R.color.cardview_dark_background1))
+
         }
-    /*    for (i in arrayPro) {
-            Log.v("miro ", i.titulo.toString())
-
-        }*/
-
         return builder.create()
-
     }
 
     override fun onClick(v: View?) {
@@ -146,25 +126,17 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
                         .child("stock")
                     prodReferen.setValue(valorSumado)
                 }
-
                     for ((element1, bebComPos) in arrayCompa.zip(arrLBtnrec) ) {
                         inter(bebComPos,element1.titulo.toString(),element1.cantProducto.toString().toInt()+element1.stockTienda.toString().toInt())
-                      // println("Elemento 1: ${element1.titulo.toString()} + ${element1.titulo.toString()}  , Elemento 2: $bebComPos,Stock : ${element1.stockTienda.toString()} ")
                     }
                     Snackbar.make(v, "PRODUCTOS CARGADOS!", Snackbar.LENGTH_SHORT).show()
-
-                   // dismiss()
-
-                    //TODO SEGUIR CARGANDO  SI DICE QUE NO EXITPROCESS SI SI , VACIAR LA LISTA
-                 //  exitProcess(0)
                     dismiss()
-                    listenerT.onRecreoDT()
+                    listenerT.onRecreoDS()
 
                 }else{
                     Snackbar.make(v, "Muchas gracias!", Snackbar.LENGTH_SHORT).show()
                     enviarCorreo()
                     exitProcess(0)
-              //      dismiss()
                 }
 
             }
@@ -178,12 +150,10 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
 
         aryProduc_tot = ArrayList()
         aryProBtn = ArrayList()
-        productoTotal = ProductoTotal()
-        aryProduc_tot.add(productoTotal)
+        producSeleccionado = ProducSeleccionado()
+        aryProduc_tot.add(producSeleccionado)
         aryProduc_tot = arrayCompa
-
-        adaptador = AdaptadorTotal(requireContext(), aryProduc_tot)
-
+        adaptador = AdaptadorProdSelec(requireContext(), aryProduc_tot,stockAda)
         recycler_Tot.adapter = adaptador
         recycler_Tot.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -216,13 +186,10 @@ class DialogoTotal : DialogFragment(), View.OnClickListener {
     override fun onResume() {
         btnPagar.setOnClickListener(this)
         btnAtras.setOnClickListener(this)
-
         super.onResume()
     }
 
     override fun onStart() {
-
-
         super.onStart()
         instancias()
     }

@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.tf_restaurante.R
 import com.example.tf_restaurante.model.Producto
-import com.example.tf_restaurante.model.ProductoTotal
+import com.example.tf_restaurante.model.ProducSeleccionado
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlin.math.roundToInt
 
 
-class DialogoProducto : DialogFragment(), View.OnClickListener {
+class DialogoProdInicial : DialogFragment(), View.OnClickListener {
 
     private lateinit var db: FirebaseDatabase
     lateinit var listenerT: OnProductoTotal
@@ -48,48 +48,32 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
     lateinit var productoGr: Producto
     var botSel:Boolean=true
 
-
-
-    //  private lateinit var mayor: ImageButton
-
+//Envío
     interface OnProductoTotal {
-        fun onProductoTotal(productoTotal: ProductoTotal)
-
+        fun onProdVeAdmin(producSeleccionado: ProducSeleccionado)
         fun onEnvBtnConfir(envBtn: String)
-
-        fun onRecreo()
-
-
-
+        fun onRecreoDI(envBtn: String)
 
     }
-
+//Recibo
     companion object {
         val args = Bundle()
-        fun newInstance(producto: Producto): DialogoProducto {
+        fun newInstance(producto: Producto): DialogoProdInicial {
             args.putSerializable("producto", producto)
-            val fragment = DialogoProducto()
+            val fragment = DialogoProdInicial()
             fragment.arguments = args
             return fragment
         }
-
         fun btnOkSelec(btnSel: String) {
             args.putSerializable("selBtn", btnSel)
         }
-        fun onGetDialConfir(seleccion: Boolean) {
-            args.putSerializable("selBool", seleccion)
-        }
-
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        vista = LayoutInflater.from(context).inflate(R.layout.dialogo_producto, null)
+        vista = LayoutInflater.from(context).inflate(R.layout.dialogo_prod_inic, null)
         listenerT = requireContext() as OnProductoTotal
         db = FirebaseDatabase.getInstance("https://restaurante-tfg-default-rtdb.firebaseio.com/")
-        //   adaptadorPr = AdaptadorProductos(context, aryProductos, supportFragmentManager,aryPrBtn)
-
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -99,8 +83,6 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         instancias()
         auth = FirebaseAuth.getInstance();
         return builder.create()
-
-
     }
 
 
@@ -116,40 +98,30 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         elim = vista.findViewById(R.id.btn_eliminar)
         editCant = vista.findViewById(R.id.edit_can_pro)
 
-
     }
 
     override fun onStart() {
-    //    prducTot = this.arguments?.getSerializable("selProd") as ProductoTotal
         productoGr = this.arguments?.getSerializable("producto") as Producto
         btnokSel = this.arguments?.getString("selBtn").toString()
         botSel = this.arguments?.getBoolean("selBool") as Boolean
 
         valorGral = productoGr.precio!!.toDouble()
 
-
-
-
+        //Si es Admin seteo y cargo valores de una forma distinto a lo normal
         if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2" ))) {
-
             Glide.with(requireContext()).load(productoGr.imagen)
                 .apply(RequestOptions.circleCropTransform()).into(img)
             producto.setText(productoGr.titulo!!.toString())
             elim.visibility=View.VISIBLE
+            ok.setText("Cargar")
 
         } else {
 
-
-
             precio.setText("Precio: " + valorGral)
-            //   Glide.with(requireContext()).load(productoGr.imagen).into(img)
-            Glide.with(requireContext()).load(productoGr.imagen)
-                .apply(RequestOptions.circleCropTransform()).into(img)
-
+            Glide.with(requireContext()).load(productoGr.imagen).apply(RequestOptions.circleCropTransform()).into(img)
             producto.setText(productoGr.titulo!!.toString())
 
         }
-
         super.onStart()
     }
 
@@ -160,20 +132,14 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
         ok.setOnClickListener(this)
         back.setOnClickListener(this)
         elim.setOnClickListener(this)
-     //   mayor.setOnClickListener(this)
-
         super.onResume()
-
-
     }
 
     override fun onClick(v: View?) {
 
         when (v!!.id) {
             R.id.btn_eliminar -> {
-
-                //TODO CUADRO DE DIALOGO
-
+        //Si confirmo la eliminación siendo Admin salgo del cuadro de diálogo y envío la func para recrear el Activiti en el SecondAc
              var notificacion = Snackbar.make(vista,"¿Seguro que desea eliminar? " ,Snackbar.LENGTH_INDEFINITE)
                 notificacion.setAction("Confirmar") {
                     var prodReferen = db.getReference("productos")
@@ -182,19 +148,9 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                     prodReferen.setValue(null)
 
                     dismiss()
-                    listenerT.onRecreo()
+                    listenerT.onRecreoDI(btnokSel)
                 }
                 notificacion.show()
-
-
-
-
-
-
-
-
-
-
 
             }
 
@@ -202,7 +158,6 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                 cont += 1
                 editCant.setText((cont).toString())
 
-                //  Log.v("contador 0 ",cont.toString())
             }
             R.id.btn_abajo -> {
                 cont -= 1
@@ -220,60 +175,43 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
 
                 if (cont > 0) {
 
-
                     fun cargoDial(){
-                //### ME CARGA EN EL CUADRO DE DIALOGO SOLO SI EL VALOR SELEC ES INFERIOR AL VALOR DE STOCK
+                    //Multiplica el precio x la cantidad
                         arrayPrecio = ArrayList()
                         arrayPrecio.add((valorGral) * cont.toDouble())
                         for (i in arrayPrecio) {
                             acumTot += i
                         }
-
-                        var prodTot: ProductoTotal
-                        //redondeo con el roundoff
+                        var prodTot: ProducSeleccionado
+                        //Redondeo con el roundoff
                         var roundoff =
                             (acumTot * 100).roundToInt().toDouble() / 100
-
-                        prodTot = (ProductoTotal(
+                        //Cargo los valores en en el item
+                        prodTot = (ProducSeleccionado(
                             productoGr.imagen,
                             cont,
                             productoGr.titulo,
                             productoGr.precio,
                             roundoff,
                             productoGr.stock
-
-
                         ))
+                        //Si es 0 la cantidad no me carga nada
                         if (prodTot.cantProducto.toString().toInt()>0) {
-                            listenerT.onProductoTotal(prodTot)
+                            listenerT.onProdVeAdmin(prodTot)
                         }
-
                         cont=0
-
-                //### FIN DE  ME CARGA EN EL CUADRO DE DIALOGO SOLO SI EL VALOR SELEC ES INFERIOR AL VALOR DE STOCK
                     }
 
-
-
-
-
                     if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2" ))) {
-
-                        //SI SOY ADMIN RECIVO DESDE EL SECONDA. EL VALOR DEL BTN ,COMIDA ETC Y SE LO VUELVO A ENVIAR AL SECONDA. CUANDO CONFIRMA LA COMPRA
-                        //NO SE LO PUEDE PASAR AL SECOND PORQUE SOLO RECIBE 1 SOLO VALOR Y LO PISA,POR ESO SE LO ENVIO AL ADAPTADOR
-                        //ENVIO DE A 1 Y AL SECONDA.EL SECOND LLAMA AL LA FUN DEL ADAPTADOR Y LO AGREGA
-
+                      //Despues de haber recibido el string del botón selec lo reenvio desde aquí que es cuando fue confirmada la acción
                         listenerT.onEnvBtnConfir(btnokSel)
-                        //   Log.v("Array", btnokSel)
-                        //           adaptadorPr.agreBtn(btnokSel)
-                        //##LLAMO A LA FUN QUE CARGA LOS LOS ITEMS
+                        //Llamo a la fun que multiplica el precio x la cantidad y me carga los item de c/produc
                         cargoDial()
+                        //Tiene que haber un dismiss para el Admin y otro para el Cliente,no se puede poner al final que valga para los dos porque falla
                         dismiss()
-                        //TODO TIENE QUE HABER UN DISSMIS PARA EL ADMIN Y OTRO PARA EL USUARIO-NO SE PUEDE PONER AL FINAL ANTES DE TERMINAR LA PULSACIÓN DEL BTN PORQUE PORQUE NO COMPILA
                     } else {
 
-
-            //## Traigo el valor del stock en tiempo real
+                        //Traigo el valor del stock en tiempo real
                             db.getReference("productos")
                                 .child(btnokSel)
                                 .child(productoGr.titulo.toString())
@@ -281,64 +219,45 @@ class DialogoProducto : DialogFragment(), View.OnClickListener {
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
                                         var stockI = snapshot.getValue(Int::class.java)
-            //## FIN Traigo el valor del stock en tiempo real
-                                        Log.v("Prue", stockI.toString())
 
-                    //#RESTO EL VALOR QUE ME PASA DE STOCK POR LA CANTIDAD QUE COSUMO
-
+                        //FIN Traigo el valor del stock en tiempo real
+                            //Resto el valor de stock que recibo de la BD por la cantidad que consumió el cliente
                                         fun inter( btnNomRec: String,tit: String,  valorSumado: Int   ) {
-
                                             var prodReferen = db.getReference("productos")
                                                 .child(btnNomRec)
                                                 .child(tit)
                                                 .child("stock")
                                             prodReferen.setValue(valorSumado)
                                         }
-                                        Log.v("contador1 ", cont.toString())
-                    //#RESTO EL VALOR QUE ME PASA DE STOCK POR LA CANTIDAD QUE COSUMO
+                            //FIN Resto el valor de stock que recibo de la BD por la cantidad que consumió el cliente
 
-                            //##   VALIDO SI HAY PRODUCTOS EN STOCK
+                                //Valido si hay productos en stock de la BD
                                         if ((cont <= stockI!!) && (stockI > 0)) {
-
                                             inter(  btnokSel, productoGr.titulo.toString(),(stockI - cont) )
-
-                                            //##LLAMO A LA FUN QUE CARGA LOS LOS ITEMS
+                                            //Llamo a la fun que multiplica el precio x la cantidad y me carga los item de c/produc
                                             cargoDial()
+                                            //Tiene que haber un dismiss para el Admin y otro para el Cliente,no se puede poner al final que valga para los dos porque falla
                                             dismiss()
-                                            //TODO TIENE QUE HABER UN DISSMIS PARA EL ADMIN Y OTRO PARA EL USUARIO-NO SE PUEDE PONER AL FINAL ANTES DE TERMINAR LA PULSACIÓN DEL BTN PORQUE PORQUE NO COMPILA
-
-
-
-
                                         } else if (stockI == 0 && cont > 0) {
                                             Snackbar.make(vista,"No hay de este producto disponible", Snackbar.LENGTH_SHORT ).show()
                                         } else if (cont > stockI) {
                                             Snackbar.make(vista,"Supera el stock, usted puede seleccionar ${stockI} de este producto",Snackbar.LENGTH_SHORT).show()
                                         }
-                            //##  FIN VALIDO SI HAY PRODUCTOS EN STOCK
+                                //FIN Valido si hay productos en stock de la BD
 
                                     }
-
                                     override fun onCancelled(error: DatabaseError) {
-                                        //ERROR EN LA COMUNICACIÓN
+                                        Snackbar.make(vista,"Error en la conexión", Snackbar.LENGTH_SHORT).show()
                                     }
                                 })
                     }
                 } else {
                     Snackbar.make(vista, "Ingrese un valor mayor que 1! ", Snackbar.LENGTH_SHORT).show()
                 }
-
-
-
             }
             R.id.btn_cancel -> {
                 dismiss()
-
             }
         }
-
-    }
-
-
-}
+    }}
 

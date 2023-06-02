@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
+
+    android:layout_marginLeft="3dp"
+
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="5dp"
 
     >
 
@@ -24,13 +29,12 @@
         android:id="@+id/cant_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:hint="cantidad"
         android:layout_marginLeft="10dp"
+        android:hint="cantidad"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="10dp"
         android:textStyle="bold"
-
 
         app:layout_constraintBottom_toBottomOf="@+id/img_total"
         app:layout_constraintStart_toEndOf="@+id/img_total"
@@ -40,10 +44,10 @@
         android:id="@+id/titulo_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
         android:hint="titulo"
-        android:layout_marginLeft="10dp"
-        android:textSize="10dp"
         android:textColor="@color/white"
+        android:textSize="10dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/cant_item"
         app:layout_constraintStart_toEndOf="@+id/cant_item"
@@ -53,39 +57,47 @@
         android:id="@+id/prec_uni_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:layout_marginRight="1dp"
         android:textColor="@color/white"
         android:textSize="10dp"
-        android:layout_marginRight="10dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/titulo_item"
-        app:layout_constraintEnd_toStartOf="@+id/valor_tot_item"
+
+
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/titulo_item" />
 
     <TextView
         android:id="@+id/valor_tot_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:layout_marginRight="1dp"
+        android:gravity="end"
         android:textColor="@color/white"
         android:textSize="10dp"
-        android:gravity="end"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/prec_uni_item"
-        app:layout_constraintEnd_toEndOf="parent"
+
+
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/prec_uni_item" />
 
-    <TextView
-        android:visibility="invisible"
-        android:id="@+id/item_Stock"
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="10dp"
-        android:gravity="end"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/prec_uni_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/prec_uni_item" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="211dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="285dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

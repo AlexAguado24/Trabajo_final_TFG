@@ -11,29 +11,17 @@ import com.example.tf_restaurante.databinding.FragmentFirstBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth;
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         auth = FirebaseAuth.getInstance();
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-
-        //(activity as FirstFragment).supportActionBar?.title = getString(R.string.your_title)
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,49 +33,41 @@ class FirstFragment : Fragment() {
                     auth.signInWithEmailAndPassword(binding.editNomLog.text.toString(),binding.editPassLog.text.toString())
                         .addOnCompleteListener {
                             if (!it.isSuccessful) {
-
-                                Snackbar.make(binding.root,"el usuario no existe",Snackbar.LENGTH_SHORT).show()
-
+                                Snackbar.make(binding.root,"El usuario no existe",Snackbar.LENGTH_SHORT).show()
                             } else {
                                 val bundle = Bundle()
                                 var email :String?=null
                                 if (auth.currentUser!!.email.equals("usuarioadmin@gmail.com") && (auth.currentUser!!.uid.equals("V64nPiwdlUhIIk7K8xt7upDQTsc2"))) {
-                                    Snackbar.make(binding.root, "JEFE INGRESANDO", Snackbar.LENGTH_SHORT).show()
+
                                 }else{
-
-
                                     email = it.result.user!!.email
                                     email = binding.editNomLog.text.toString()
                                     bundle.putString("nombre", email)
                                     bundle.putString("uid", auth.currentUser!!.uid)
-                                }
-                                findNavController().navigate(R.id.action_FirstFragment_to_secondActivity,bundle)
 
+                                }
+
+                                findNavController().navigate(R.id.action_FirstFragment_to_secondActivity,bundle)
                             }
                         }
+
+
                 } else {
-                    Snackbar.make(binding.root, "no ha ingresado datos", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "No ha ingresado datos", Snackbar.LENGTH_SHORT).show()
                 }
 
 
             }
-
-
         binding.btnRegister.setOnClickListener {
-
-            //todo No paso ningun dato porque se los pido en el SecondFragment directamente
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-
         }
 
     }
 
     override fun onResume() {
-
         super.onResume()
-        //   (activity as AppCompatActivity)!!.supportActionBar!!.hide()
+        //Le pongo nombre de Titulo al FirstFrag
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.base)
-
     }
 
     override fun onDestroyView() {
